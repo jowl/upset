@@ -31,6 +31,14 @@ module Veritas
         expect(configuration['delta']).to be_nil
       end
 
+      it 'returns deep frozen values' do
+        deep_frozen = proc do |obj|
+          obj.frozen? && (!obj.is_a?(Enumerable) || (obj.is_a?(Hash) ? obj.values : obj).all?(&deep_frozen))
+        end
+        configuration.providers << { 'alpha' => [{'ALPHA' => ['A', 1]}, 'BETA'] }
+        expect(configuration['alpha']).to satisfy(&deep_frozen)
+      end
+
       context 'when providers change' do
         before do
           configuration['alpha']

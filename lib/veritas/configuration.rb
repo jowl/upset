@@ -26,8 +26,13 @@ module Veritas
     end
 
     def merge_providers
-      @configuration = @providers.reduce(@default_provider) { |config, provider| config.merge(provider) }
+      @configuration = deep_freeze(@providers.reduce(@default_provider) { |config, provider| config.merge(provider) })
       @previous_providers = @providers.dup
+    end
+
+    def deep_freeze(object)
+      object.each(&method(:deep_freeze)) if object.is_a?(Enumerable)
+      object.freeze
     end
   end
 end
