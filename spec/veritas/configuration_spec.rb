@@ -10,7 +10,7 @@ module Veritas
 
     describe '#[]' do
       let :default_provider do
-        { 'alpha' => :a1, 'beta' => :a2, 'caesar' => :a3}
+        { 'alpha' => :a1, 'beta' => :a2, 'gamma' => :a3}
       end
 
       let :providers do
@@ -24,7 +24,7 @@ module Veritas
       it 'returns the first found property value from the providers' do
         expect(configuration['alpha']).to eq(:c1)
         expect(configuration['beta']).to eq(:b2)
-        expect(configuration['caesar']).to eq(:a3)
+        expect(configuration['gamma']).to eq(:a3)
       end
 
       it 'returns nil for unknown properties' do

@@ -9,7 +9,7 @@ module Veritas
       let :properties do
         {
           'alpha' => 1,
-          'bravo' => 2,
+          'beta' => 2,
         }
       end
 
@@ -26,7 +26,7 @@ module Veritas
       describe '#reload' do
         it "doesn't do anything" do
           expect do
-            properties.merge!('caesar' => 3)
+            properties.merge!('gamma' => 3)
             provider.reload
           end.not_to change(provider, :to_h)
         end

@@ -9,7 +9,7 @@ module Veritas
     end
 
     let :optional do
-      %w[bravo]
+      %w[beta]
     end
 
     let :definition do
@@ -19,7 +19,7 @@ module Veritas
     let :configuration do
       {
         'alpha' => 1,
-        'bravo' => 2,
+        'beta' => 2,
       }
     end
 
@@ -34,13 +34,13 @@ module Veritas
       end
 
       it "doesn't raise error when an optional parameter is missing" do
-        configuration.delete('bravo')
+        configuration.delete('beta')
         expect { definition.validate(configuration) }.not_to raise_error
       end
 
       it "raises UnknownParameterError when a parameter isn't required nor optional" do
-        configuration.merge!('caesar' => 3)
-        expect { definition.validate(configuration) }.to raise_error(UnknownParameterError, /unknown.+caesar/i)
+        configuration.merge!('gamma' => 3)
+        expect { definition.validate(configuration) }.to raise_error(UnknownParameterError, /unknown.+gamma/i)
       end
     end
 
