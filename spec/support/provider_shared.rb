@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 shared_examples 'a provider' do
   it 'is a Hash' do
     expect(provider).to be_a(Hash)
