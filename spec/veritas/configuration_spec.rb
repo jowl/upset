@@ -31,21 +31,28 @@ module Veritas
         expect(configuration['delta']).to be_nil
       end
 
-      it 'detects if new providers are added to the list' do
-        configuration.providers << { 'alpha' => :d1 }
-        expect(configuration['alpha']).to eq(:d1)
-      end
+      context 'when providers change' do
+        before do
+          configuration['alpha']
+        end
 
-      it 'detects if providers are removed to the list' do
-        configuration.providers.pop
-        expect(configuration['alpha']).to eq(:b1)
-      end
+        it 'detects if new providers are added to the list' do
+          configuration.providers << { 'alpha' => :d1 }
+          expect(configuration['alpha']).to eq(:d1)
+        end
 
-      it 'detects if a provider is mutated' do
-        configuration.providers.last.merge!('beta' => :c2)
-        expect(configuration['alpha']).to eq(:c1)
+        it 'detects if providers are removed from the list' do
+          configuration.providers.pop
+          expect(configuration['alpha']).to eq(:b1)
+        end
+
+        it 'detects if a provider is mutated' do
+          configuration.providers.last.merge!('beta' => :c2)
+          expect(configuration['alpha']).to eq(:c1)
+        end
       end
     end
+
 
     describe '#reload' do
       let :default_provider do
