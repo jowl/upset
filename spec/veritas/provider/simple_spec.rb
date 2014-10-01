@@ -25,9 +25,10 @@ module Veritas
 
       describe '#reload' do
         it "doesn't do anything" do
-          before = provider.to_h
-          properties.merge!('caesar' => 3)
-          expect(provider.reload).to eql(before)
+          expect do
+            properties.merge!('caesar' => 3)
+            provider.reload
+          end.not_to change(provider, :to_h)
         end
       end
     end
