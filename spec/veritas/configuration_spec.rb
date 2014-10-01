@@ -39,6 +39,12 @@ module Veritas
         expect(configuration['alpha']).to satisfy(&deep_frozen)
       end
 
+      it 'deep merges Hash values' do
+        configuration.providers << {'alpha' => {'ALPHA' => {'a' => 1}}}
+        configuration.providers << {'alpha' => {'ALPHA' => {'b' => 2}}}
+        expect(configuration['alpha']).to eq('ALPHA' => {'a' => 1, 'b' => 2})
+      end
+
       context 'when providers change' do
         before do
           configuration['alpha']

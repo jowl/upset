@@ -26,8 +26,18 @@ module Veritas
     end
 
     def merge_providers
-      @configuration = deep_freeze(@providers.reduce(@default_provider) { |config, provider| config.merge(provider) })
+      @configuration = deep_freeze(@providers.reduce(@default_provider) { |config, provider| deep_merge(config, provider) })
       @previous_providers = @providers.dup
+    end
+
+    def deep_merge(hsh, other_hash)
+      hsh.merge(other_hash) do |key, oldval, newval|
+        if oldval.is_a?(Hash) && newval.is_a?(Hash)
+          deep_merge(oldval, newval)
+        else
+          newval
+        end
+      end
     end
 
     def deep_freeze(object)
