@@ -17,7 +17,7 @@ module Veritas
 
     describe '#reload' do
       it 'returns self' do
-        expect(provider.reload).to eql(provider)
+        expect(provider.reload).to eq(provider)
       end
     end
   end

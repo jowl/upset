@@ -8,6 +8,6 @@ shared_examples 'a provider' do
   end
 
   it 'has the expected properties' do
-    expect(provider).to eql(expected_properties)
+    expect(provider).to eq(expected_properties)
   end
 end

@@ -57,7 +57,7 @@ module Veritas
       end
 
       it 'returns self' do
-        expect(configuration.reload).to eql(configuration)
+        expect(configuration.reload).to eq(configuration)
       end
 
       it 'reloads the default provider' do
