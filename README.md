@@ -1,8 +1,8 @@
-# Veritas
+# Upset
 
-Veritas, meaning truth, is a configuration management library that
-provides functionality for defining, providing, and inspecting
-application configuration.
+Upset is a configuration management library that provides
+functionality for defining, providing, and inspecting application
+configuration.
 
 ## Definition
 

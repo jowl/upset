@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-module Veritas
+module Upset
   describe Configuration do
     let :configuration do
       described_class.new(default_provider)

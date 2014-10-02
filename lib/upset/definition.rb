@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-module Veritas
+module Upset
   class Definition
     def initialize(required, optional)
       @required = required
@@ -23,7 +23,7 @@ module Veritas
     end
   end
 
-  ValidationError = Class.new(VeritasError)
+  ValidationError = Class.new(UpsetError)
   MissingParameterError = Class.new(ValidationError)
   UnknownParameterError = Class.new(ValidationError)
 end

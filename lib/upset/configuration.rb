@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-module Veritas
+module Upset
   class Configuration
     attr_accessor :providers
     def initialize(default_provider)

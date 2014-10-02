@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-module Veritas
+module Upset
   describe Definition do
     let :required do
       %w[alpha]

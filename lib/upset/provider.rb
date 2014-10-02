@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-module Veritas
+module Upset
   class Provider < Hash
     def reload
       self
@@ -8,4 +8,4 @@ module Veritas
   end
 end
 
-require 'veritas/provider/simple'
+require 'upset/provider/simple'

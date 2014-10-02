@@ -6,7 +6,7 @@ require 'simplecov'
 
 SimpleCov.start do
   add_group 'Source', 'lib'
-  add_group 'Unit tests', 'spec/veritas'
+  add_group 'Unit tests', 'spec/upset'
 end
 
-require 'veritas'
+require 'upset'

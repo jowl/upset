@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'support/provider_shared'
 
-module Veritas
+module Upset
   describe Provider do
     let :provider do
       described_class.new

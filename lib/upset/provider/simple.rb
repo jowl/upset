@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-module Veritas
+module Upset
   class Provider
     class Simple < self
       def initialize(properties)
