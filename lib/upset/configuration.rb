@@ -19,6 +19,16 @@ module Upset
       self
     end
 
+    def has_property?(property)
+      merge_providers if dirty?
+      @configuration.has_key?(property)
+    end
+
+    def properties
+      merge_providers if dirty?
+      @configuration.keys
+    end
+
     private
 
     def dirty?

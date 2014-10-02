@@ -2,25 +2,29 @@
 
 require 'spec_helper'
 
+class FakeConfiguration < Hash
+  def initialize(properties)
+    replace(properties)
+  end
+  alias :has_property? :has_key?
+  alias :properties :keys
+end
+
 module Upset
   describe Definition do
-    let :required do
-      %w[alpha]
-    end
-
-    let :optional do
-      %w[beta]
+    let :property_definitions do
+      {
+        'alpha' => PropertyDefinition.new(Constraint::Valid.new, true),
+        'beta' => PropertyDefinition.new(Constraint::Valid.new, false),
+      }
     end
 
     let :definition do
-      described_class.new(required, optional)
+      described_class.new(property_definitions)
     end
 
     let :configuration do
-      {
-        'alpha' => 1,
-        'beta' => 2,
-      }
+      FakeConfiguration.new('alpha' => 1, 'beta' => 2)
     end
 
     describe '#validate' do
@@ -28,19 +32,19 @@ module Upset
         expect { definition.validate(configuration) }.not_to raise_error
       end
 
-      it 'raises MissingParameterError when a required parameter is missing' do
+      it 'raises MissingPropertyError when a required property is missing' do
         configuration.delete('alpha')
-        expect { definition.validate(configuration) }.to raise_error(MissingParameterError, /missing.+alpha/i)
+        expect { definition.validate(configuration) }.to raise_error(MissingPropertyError, /missing.+alpha/i)
       end
 
-      it "doesn't raise error when an optional parameter is missing" do
+      it "doesn't raise error when an optional property is missing" do
         configuration.delete('beta')
         expect { definition.validate(configuration) }.not_to raise_error
       end
 
-      it "raises UnknownParameterError when a parameter isn't required nor optional" do
+      it "raises UnknownPropertyError when a property isn't required nor optional" do
         configuration.merge!('gamma' => 3)
-        expect { definition.validate(configuration) }.to raise_error(UnknownParameterError, /unknown.+gamma/i)
+        expect { definition.validate(configuration) }.to raise_error(UnknownPropertyError, /unknown.+gamma/i)
       end
     end
 

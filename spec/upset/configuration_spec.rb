@@ -4,6 +4,10 @@ require 'spec_helper'
 
 module Upset
   describe Configuration do
+    let :default_provider do
+      { 'alpha' => [], 'beta' => false, 'gamma' => {} }
+    end
+
     let :configuration do
       described_class.new(default_provider)
     end
@@ -67,7 +71,6 @@ module Upset
       end
     end
 
-
     describe '#reload' do
       let :default_provider do
         double(:provider, reload: nil)
@@ -90,6 +93,22 @@ module Upset
         configuration.providers = providers.dup
         configuration.reload
         expect(providers).to all have_received(:reload)
+      end
+    end
+
+    describe '#has_property?' do
+      it 'returns true if the given property is defined' do
+        expect(configuration).to have_property('alpha')
+      end
+
+      it 'returns false if the given property is not defined' do
+        expect(configuration).not_to have_property('omega')
+      end
+    end
+
+    describe '#properties' do
+      it 'returns a list of all known properties' do
+        expect(configuration.properties).to contain_exactly('alpha', 'beta', 'gamma')
       end
     end
   end

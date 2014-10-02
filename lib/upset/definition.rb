@@ -1,20 +1,24 @@
 # encoding: utf-8
 
+require 'upset/property_definition'
+
 module Upset
   class Definition
-    def initialize(required, optional)
-      @required = required
-      @optional = optional
+    def initialize(property_definitions)
+      @property_definitions = property_definitions
     end
 
     def validate(configuration)
-      missing = @required - configuration.keys
-      if !missing.empty?
-        raise MissingParameterError.new('Missing parameter(s): %s' % missing.map(&:inspect).join(', '))
+      @property_definitions.each do |property, definition|
+        if configuration.has_property?(property)
+          constraint = definition.constraint(configuration[property])
+          raise InvalidPropertyError, constraint.reason unless constraint.satisfied?
+        else
+          raise MissingPropertyError, "Missing #{property.inspect}" unless definition.optional?
+        end
       end
-      unknown = configuration.keys - (@required + @optional)
-      if !unknown.empty?
-        raise UnknownParameterError.new('Unknown parameter(s): %s' % unknown.map(&:inspect).join(', '))
+      if !(unknown = configuration.properties - @property_definitions.keys).empty?
+        raise UnknownPropertyError.new('Unknown property(s): %s' % unknown.map(&:inspect).join(', '))
       end
       true
     end
@@ -24,6 +28,7 @@ module Upset
   end
 
   ValidationError = Class.new(UpsetError)
-  MissingParameterError = Class.new(ValidationError)
-  UnknownParameterError = Class.new(ValidationError)
+  MissingPropertyError = Class.new(ValidationError)
+  InvalidPropertyError = Class.new(ValidationError)
+  UnknownPropertyError = Class.new(ValidationError)
 end
