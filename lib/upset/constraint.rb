@@ -25,3 +25,4 @@ module Upset
 end
 
 require 'upset/constraint/kind_constraint'
+require 'upset/constraint/valid_constraint'
