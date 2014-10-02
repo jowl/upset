@@ -1,28 +1,17 @@
 # encoding: utf-8
 
 module Upset
-  module Constraint
-    class Result
-      attr_reader :reason
-      def initialize(satisfied, reason=nil)
-        @satisfied = satisfied
-        @reason = reason
-      end
+  class Constraint
+    attr_reader :reason
+    def satisfied?
+      !!@satisfied
+    end
 
-      def satisfied?
-        @satisfied
-      end
-
-      def self.satisfied
-        new(true)
-      end
-
-      def self.unsatisfied(reason)
-        new(false, reason)
-      end
+    def evaluate(_)
+      self
     end
   end
 end
 
-require 'upset/constraint/kind_constraint'
-require 'upset/constraint/valid_constraint'
+require 'upset/constraint/kind'
+require 'upset/constraint/valid'
