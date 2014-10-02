@@ -3,9 +3,9 @@
 require 'spec_helper'
 
 module Upset
-  module Validation
-    describe KindValidator do
-      let :validator do
+  module Constraint
+    describe KindConstraint do
+      let :constraint do
         described_class.new(kind)
       end
 
@@ -13,14 +13,14 @@ module Upset
         []
       end
 
-      describe '#validate' do
+      describe '#evaluate' do
         context 'when value is an instance of the given class' do
           let :kind do
             Array
           end
 
-          it 'returns a valid Result' do
-            expect(validator.validate(value)).to be_valid
+          it 'returns a satisfied Result' do
+            expect(constraint.evaluate(value)).to be_satisfied
           end
         end
 
@@ -29,8 +29,8 @@ module Upset
             Object
           end
 
-          it 'returns a valid Result' do
-            expect(validator.validate(value)).to be_valid
+          it 'returns a satisfied Result' do
+            expect(constraint.evaluate(value)).to be_satisfied
           end
         end
 
@@ -39,8 +39,8 @@ module Upset
             Enumerable
           end
 
-          it 'returns a valid Result' do
-            expect(validator.validate(value)).to be_valid
+          it 'returns a satisfied Result' do
+            expect(constraint.evaluate(value)).to be_satisfied
           end
         end
 
@@ -49,12 +49,12 @@ module Upset
             Fixnum
           end
 
-          it 'returns an invalid Result' do
-            expect(validator.validate(value)).not_to be_valid
+          it 'returns an unsatisfied Result' do
+            expect(constraint.evaluate(value)).not_to be_satisfied
           end
 
-          it 'returns an invalid Result with a sensible reason' do
-            expect(validator.validate(value).reason).to match(/expected.+fixnum.+got.+array/i)
+          it 'returns an unsatisfied Result with a sensible reason' do
+            expect(constraint.evaluate(value).reason).to match(/expected.+fixnum.+got.+array/i)
           end
         end
       end
