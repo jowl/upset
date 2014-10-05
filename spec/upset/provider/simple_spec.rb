@@ -18,8 +18,8 @@ module Upset
       end
 
       it_behaves_like 'a provider' do
-        let :expected_properties do
-          properties.dup
+        let :provider do
+          described_class.new(properties)
         end
       end
 

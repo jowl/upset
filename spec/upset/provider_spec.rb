@@ -10,7 +10,7 @@ module Upset
     end
 
     it_behaves_like 'a provider' do
-      let :expected_properties do
+      let :properties do
         {}
       end
     end
