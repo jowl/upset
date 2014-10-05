@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require 'spec_helper'
+require 'support/spec_constraints'
 
 class FakeConfiguration < Hash
   def initialize(properties)
@@ -45,6 +46,11 @@ module Upset
       it "raises UnknownPropertyError when a property isn't required nor optional" do
         configuration.merge!('gamma' => 3)
         expect { definition.validate(configuration) }.to raise_error(UnknownPropertyError, /unknown.+gamma/i)
+      end
+
+      it 'raises InvalidPropertyError when a property fails to satisfy its constraint' do
+        property_definitions.merge!('alpha' => PropertyDefinition.new(SpecConstraints::Invalid.new, true))
+        expect { definition.validate(configuration) }.to raise_error(InvalidPropertyError, /invalid property.+alpha/i)
       end
     end
 

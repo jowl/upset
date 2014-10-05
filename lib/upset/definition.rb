@@ -12,7 +12,9 @@ module Upset
       @property_definitions.each do |property, definition|
         if configuration.has_property?(property)
           constraint = definition.constraint(configuration[property])
-          raise InvalidPropertyError, constraint.reason unless constraint.satisfied?
+          unless constraint.satisfied?
+          raise InvalidPropertyError, 'Invalid property %s: %s' % [property.inspect, constraint.reason]
+          end
         else
           raise MissingPropertyError, "Missing #{property.inspect}" unless definition.optional?
         end
