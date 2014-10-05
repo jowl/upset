@@ -1,10 +1,12 @@
 # encoding: utf-8
 
 module Upset
-  class Constraint
-    class Valid < self
-      def initialize
-        @satisfied = true
+  module Constraint
+    class Valid
+      include ConstraintFactory
+
+      def evaluate(_)
+        satisfied
       end
     end
   end

@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 module Upset
-  class Constraint
+  module Constraint
     describe Kind do
       let :constraint do
         described_class.new(kind)
@@ -19,7 +19,7 @@ module Upset
             Array
           end
 
-          it 'becomes satisfied' do
+          it 'returns a satisfied constraint' do
             expect(constraint.evaluate(value)).to be_satisfied
           end
         end
@@ -29,7 +29,7 @@ module Upset
             Object
           end
 
-          it 'becomes satisfied' do
+          it 'returns a satisfied constraint' do
             expect(constraint.evaluate(value)).to be_satisfied
           end
         end
@@ -39,7 +39,7 @@ module Upset
             Enumerable
           end
 
-          it 'becomes satisfied' do
+          it 'returns a satisfied constraint' do
             expect(constraint.evaluate(value)).to be_satisfied
           end
         end
@@ -49,11 +49,11 @@ module Upset
             Fixnum
           end
 
-          it 'becomes unsatisfied' do
+          it 'returns an unsatisfied constraint' do
             expect(constraint.evaluate(value)).not_to be_satisfied
           end
 
-          it 'sets a sensible reason' do
+          it 'returns an unsatisfied constraint with a sensible reason' do
             expect(constraint.evaluate(value).reason).to match(/expected.+fixnum.+got.+array/i)
           end
         end
