@@ -1,6 +1,11 @@
 # Upset
 
-Upset is a configuration management library that provides
+**WARNING:** The information in this readme presents vague goals for this
+project, rather than its current status. The library is currently not
+really usable and will be subject to major changes and additions
+shortly (hopefully). Please stay tuned.
+
+Upset is a configuration management library that will provide
 functionality for defining, providing, and inspecting application
 configuration.
 
