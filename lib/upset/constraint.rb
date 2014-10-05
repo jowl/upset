@@ -31,4 +31,5 @@ module Upset
 end
 
 require 'upset/constraint/kind'
+require 'upset/constraint/regexp'
 require 'upset/constraint/valid'
