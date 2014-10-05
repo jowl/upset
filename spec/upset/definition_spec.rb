@@ -48,9 +48,14 @@ module Upset
         expect { definition.validate(configuration) }.to raise_error(UnknownPropertyError, /unknown.+gamma/i)
       end
 
-      it 'raises InvalidPropertyError when a property fails to satisfy its constraint' do
+      it 'raises InvalidPropertyError when a required property fails to satisfy its constraint' do
         property_definitions.merge!('alpha' => PropertyDefinition.new(SpecConstraints::Invalid.new, true))
         expect { definition.validate(configuration) }.to raise_error(InvalidPropertyError, /invalid property.+alpha/i)
+      end
+
+      it 'raises InvalidPropertyError when an optional property fails to satisfy its constraint' do
+        property_definitions.merge!('beta' => PropertyDefinition.new(SpecConstraints::Invalid.new, false))
+        expect { definition.validate(configuration) }.to raise_error(InvalidPropertyError, /invalid property.+beta/i)
       end
     end
 
