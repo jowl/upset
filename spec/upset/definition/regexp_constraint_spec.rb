@@ -3,8 +3,8 @@
 require 'spec_helper'
 
 module Upset
-  module Constraint
-    describe Regexp do
+  class Definition
+    describe RegexpConstraint do
       let :constraint do
         described_class.new(pattern)
       end

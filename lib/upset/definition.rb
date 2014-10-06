@@ -1,6 +1,10 @@
 # encoding: utf-8
 
 require 'upset/property_definition'
+require 'upset/definition/evaluable_constraint'
+require 'upset/definition/kind_constraint'
+require 'upset/definition/regexp_constraint'
+require 'upset/definition/valid_constraint'
 
 module Upset
   class Definition

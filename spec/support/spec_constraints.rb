@@ -1,7 +1,5 @@
 module SpecConstraints
-  class Invalid
-    include Upset::ConstraintFactory
-
+  class Invalid < Upset::Definition::EvaluableConstraint
     def evaluate(_)
       unsatisfied('This will always be unsatisfied')
     end

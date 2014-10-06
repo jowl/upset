@@ -3,8 +3,8 @@
 require 'spec_helper'
 
 module Upset
-  module Constraint
-    describe Valid do
+  class Definition
+    describe ValidConstraint do
       let :constraint do
         described_class.new
       end

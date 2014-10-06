@@ -1,10 +1,8 @@
 # encoding: utf-8
 
 module Upset
-  module Constraint
-    class Regexp
-      include ConstraintFactory
-
+  class Definition
+    class RegexpConstraint < EvaluableConstraint
       def initialize(pattern)
         @pattern = pattern
       end

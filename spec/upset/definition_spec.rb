@@ -15,8 +15,8 @@ module Upset
   describe Definition do
     let :property_definitions do
       {
-        'alpha' => PropertyDefinition.new(Constraint::Valid.new, true),
-        'beta' => PropertyDefinition.new(Constraint::Valid.new, false),
+        'alpha' => PropertyDefinition.new(described_class::ValidConstraint.new, true),
+        'beta' => PropertyDefinition.new(described_class::ValidConstraint.new, false),
       }
     end
 

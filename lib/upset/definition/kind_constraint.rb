@@ -1,10 +1,8 @@
 # encoding: utf-8
 
 module Upset
-  module Constraint
-    class Kind
-      include ConstraintFactory
-
+  class Definition
+    class KindConstraint < EvaluableConstraint
       def initialize(kind)
         @kind = kind
       end

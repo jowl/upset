@@ -1,10 +1,8 @@
 # encoding: utf-8
 
 module Upset
-  module Constraint
-    class Valid
-      include ConstraintFactory
-
+  class Definition
+    class ValidConstraint < EvaluableConstraint
       def evaluate(_)
         satisfied
       end
