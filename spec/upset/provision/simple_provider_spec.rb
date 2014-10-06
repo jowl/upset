@@ -28,7 +28,7 @@ module Upset
           expect do
             properties.merge!('gamma' => 3)
             provider.reload
-          end.not_to change(provider, :to_h)
+          end.not_to change(provider, :dup)
         end
       end
     end
