@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 module Upset
-  class Provider
-    class Simple < self
+  module Provision
+    class SimpleProvider < Provider
       def initialize(properties)
         replace(properties)
       end

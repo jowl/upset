@@ -7,4 +7,4 @@ end
 require 'upset/configuration'
 require 'upset/constraint'
 require 'upset/definition'
-require 'upset/provider'
+require 'upset/provision'

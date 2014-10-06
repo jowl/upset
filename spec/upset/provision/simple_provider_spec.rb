@@ -4,8 +4,8 @@ require 'spec_helper'
 require 'support/provider_shared'
 
 module Upset
-  class Provider
-    describe Simple do
+  module Provision
+    describe SimpleProvider do
       let :properties do
         {
           'alpha' => 1,
