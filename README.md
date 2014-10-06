@@ -1,5 +1,7 @@
 # Upset
 
+[![Build Status](https://travis-ci.org/jowl/upset.png?branch=master)](https://travis-ci.org/jowl/upset)
+
 **WARNING:** The information in this readme presents vague goals for this
 project, rather than its current status. The library is currently not
 really usable and will be subject to major changes and additions
