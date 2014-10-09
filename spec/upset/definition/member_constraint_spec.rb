@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 module Upset
-  class Definition
+  module Definition
     describe MemberConstraint do
       let :member_constraint do
         KindConstraint.new(Fixnum)

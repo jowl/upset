@@ -47,18 +47,18 @@ module Upset
     describe Definition do
       let :property_definitions do
         {
-          'alpha' => PropertyDefinition.new(Definition::RegexpConstraint.new(/omega/i), true),
-          'beta' => PropertyDefinition.new(Definition::KindConstraint.new(Fixnum), true),
-          'gamma' => PropertyDefinition.new(Definition::ValidConstraint.new, false),
+          'alpha' => Definition::ValueDefinition.new(Definition::RegexpConstraint.new(/omega/i), false),
+          'beta' => Definition::ValueDefinition.new(Definition::KindConstraint.new(Fixnum), false),
+          'gamma' => Definition::ValueDefinition.new(Definition::ValidConstraint.new, true),
         }
       end
 
-      let :definition do
-        Definition.new(property_definitions)
+      let :schema do
+        Definition::Schema.new(property_definitions)
       end
 
       it 'is possible to validate the Configuration' do
-        expect { definition.validate(configuration) }.not_to raise_error
+        expect(schema.validate(configuration)).to be_valid
       end
     end
   end

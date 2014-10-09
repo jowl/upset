@@ -4,7 +4,7 @@ require 'spec_helper'
 require 'support/spec_constraints'
 
 module Upset
-  class Definition
+  module Definition
     describe DisjunctiveConstraint do
       let :constraints do
         [

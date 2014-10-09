@@ -3,7 +3,7 @@
 require 'upset/definition/connective_constraint'
 
 module Upset
-  class Definition
+  module Definition
     class ConjunctiveConstraint < ConnectiveConstraint
       private
       def satisfied_by?(_, unsatisfied_constraints)

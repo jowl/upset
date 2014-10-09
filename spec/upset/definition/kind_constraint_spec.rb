@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 module Upset
-  class Definition
+  module Definition
     describe KindConstraint do
       let :constraint do
         described_class.new(kind)

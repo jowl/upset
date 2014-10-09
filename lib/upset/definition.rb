@@ -1,6 +1,48 @@
 # encoding: utf-8
 
-require 'upset/property_definition'
+module Upset
+  module Definition
+    class Definition
+      def validate(_)
+        raise 'must be implemented in subclass'
+      end
+
+      protected
+
+      def valid
+        ValidationResult.new(true, nil)
+      end
+
+      def invalid(reason)
+        ValidationResult.new(false, reason)
+      end
+    end
+
+    class ValidationResult
+      attr_reader :reason
+      def initialize(valid, reason)
+        @valid = valid
+        @reason = Array(reason)
+      end
+
+      def valid?
+        !!@valid
+      end
+
+      def self.join(results)
+        invalid_results = results.reject(&:valid?)
+        if invalid_results.empty?
+          new(true, nil)
+        else
+          new(false, invalid_results.map(&:reason))
+        end
+      end
+    end
+  end
+end
+
+require 'upset/definition/property_definition'
+require 'upset/definition/schema'
 require 'upset/definition/evaluable_constraint'
 require 'upset/definition/conjunctive_constraint'
 require 'upset/definition/disjunctive_constraint'
@@ -8,36 +50,3 @@ require 'upset/definition/kind_constraint'
 require 'upset/definition/member_constraint'
 require 'upset/definition/regexp_constraint'
 require 'upset/definition/valid_constraint'
-
-module Upset
-  class Definition
-    def initialize(property_definitions)
-      @property_definitions = property_definitions
-    end
-
-    def validate(configuration)
-      @property_definitions.each do |property, definition|
-        if configuration.has_property?(property)
-          constraint = definition.constraint(configuration[property])
-          unless constraint.satisfied?
-          raise InvalidPropertyError, 'Invalid property %s: %s' % [property.inspect, constraint.reason]
-          end
-        else
-          raise MissingPropertyError, "Missing #{property.inspect}" unless definition.optional?
-        end
-      end
-      if !(unknown = configuration.properties - @property_definitions.keys).empty?
-        raise UnknownPropertyError.new('Unknown property(s): %s' % unknown.map(&:inspect).join(', '))
-      end
-      true
-    end
-
-    def describe
-    end
-  end
-
-  ValidationError = Class.new(UpsetError)
-  MissingPropertyError = Class.new(ValidationError)
-  InvalidPropertyError = Class.new(ValidationError)
-  UnknownPropertyError = Class.new(ValidationError)
-end

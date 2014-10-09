@@ -3,7 +3,7 @@
 require 'upset/definition/evaluated_constraint'
 
 module Upset
-  class Definition
+  module Definition
     class EvaluableConstraint
       protected
 

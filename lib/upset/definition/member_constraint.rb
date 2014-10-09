@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 module Upset
-  class Definition
+  module Definition
     class MemberConstraint < EvaluableConstraint
       def initialize(member_constraint)
         @member_constraint = member_constraint

@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 module Upset
-  class Definition
+  module Definition
     AlreadyEvaluatedError = Class.new(UpsetError)
 
     class EvaluatedConstraint

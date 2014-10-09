@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 module Upset
-  class Definition
+  module Definition
     class ConnectiveConstraint < EvaluableConstraint
       def initialize(*constraints)
         @constraints = constraints
