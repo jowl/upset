@@ -2,7 +2,7 @@
 
 module Upset
   module Definition
-    class ConnectiveConstraint < EvaluableConstraint
+    class ConnectiveConstraint < Constraint
       def initialize(*constraints)
         @constraints = constraints
       end

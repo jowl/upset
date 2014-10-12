@@ -2,7 +2,7 @@
 
 module Upset
   module Definition
-    class KindConstraint < EvaluableConstraint
+    class KindConstraint < Constraint
       def initialize(kind)
         @kind = kind
       end

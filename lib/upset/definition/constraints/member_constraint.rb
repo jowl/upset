@@ -2,7 +2,7 @@
 
 module Upset
   module Definition
-    class MemberConstraint < EvaluableConstraint
+    class MemberConstraint < Constraint
       def initialize(member_constraint)
         @member_constraint = member_constraint
       end

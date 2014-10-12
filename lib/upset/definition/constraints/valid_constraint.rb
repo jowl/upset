@@ -2,7 +2,7 @@
 
 module Upset
   module Definition
-    class ValidConstraint < EvaluableConstraint
+    class ValidConstraint < Constraint
       def evaluate(_)
         satisfied
       end

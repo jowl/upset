@@ -43,10 +43,4 @@ end
 
 require 'upset/definition/property_definition'
 require 'upset/definition/schema'
-require 'upset/definition/evaluable_constraint'
-require 'upset/definition/conjunctive_constraint'
-require 'upset/definition/disjunctive_constraint'
-require 'upset/definition/kind_constraint'
-require 'upset/definition/member_constraint'
-require 'upset/definition/regexp_constraint'
-require 'upset/definition/valid_constraint'
+require 'upset/definition/constraint'

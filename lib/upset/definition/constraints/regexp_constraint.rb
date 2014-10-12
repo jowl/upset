@@ -2,7 +2,7 @@
 
 module Upset
   module Definition
-    class RegexpConstraint < EvaluableConstraint
+    class RegexpConstraint < Constraint
       def initialize(pattern)
         @pattern = pattern
       end

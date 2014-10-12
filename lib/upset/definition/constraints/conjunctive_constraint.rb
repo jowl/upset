@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'upset/definition/connective_constraint'
+require 'upset/definition/constraints/connective_constraint'
 
 module Upset
   module Definition
