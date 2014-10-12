@@ -2,7 +2,7 @@
 
 module Upset
   module Definition
-    class ValueDefinition < PropertyDefinition
+    class ValueProperty < PropertyDefinition
       def initialize(constraint, optional)
         @constraint = constraint
         super(optional)

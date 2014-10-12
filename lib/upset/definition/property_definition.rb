@@ -14,5 +14,5 @@ module Upset
   end
 end
 
-require 'upset/definition/schema_definition'
-require 'upset/definition/value_definition'
+require 'upset/definition/schema_property'
+require 'upset/definition/value_property'

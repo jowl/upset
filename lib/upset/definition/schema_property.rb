@@ -2,7 +2,7 @@
 
 module Upset
   module Definition
-    class SchemaDefinition < PropertyDefinition
+    class SchemaProperty < PropertyDefinition
       def initialize(schema, optional)
         @schema = schema
         super(optional)

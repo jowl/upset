@@ -47,9 +47,9 @@ module Upset
     describe Definition do
       let :property_definitions do
         {
-          'alpha' => Definition::ValueDefinition.new(Definition::RegexpConstraint.new(/omega/i), false),
-          'beta' => Definition::ValueDefinition.new(Definition::KindConstraint.new(Fixnum), false),
-          'gamma' => Definition::ValueDefinition.new(Definition::ValidConstraint.new, true),
+          'alpha' => Definition::ValueProperty.new(Definition::RegexpConstraint.new(/omega/i), false),
+          'beta' => Definition::ValueProperty.new(Definition::KindConstraint.new(Fixnum), false),
+          'gamma' => Definition::ValueProperty.new(Definition::ValidConstraint.new, true),
         }
       end
 

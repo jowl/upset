@@ -16,8 +16,8 @@ module Upset
     describe Schema do
       let :property_definitions do
         {
-          'alpha' => ValueDefinition.new(ValidConstraint.new, false),
-          'beta' => ValueDefinition.new(ValidConstraint.new, true),
+          'alpha' => ValueProperty.new(ValidConstraint.new, false),
+          'beta' => ValueProperty.new(ValidConstraint.new, true),
         }
       end
 
@@ -50,12 +50,12 @@ module Upset
         end
 
         it 'returns an invalid result when a required property fails to satisfy its constraint' do
-          property_definitions.merge!('alpha' => ValueDefinition.new(SpecConstraints::InvalidConstraint.new, true))
+          property_definitions.merge!('alpha' => ValueProperty.new(SpecConstraints::InvalidConstraint.new, true))
           expect(schema.validate(configuration)).not_to be_valid
         end
 
         it 'returns an invalid result when an optional property fails to satisfy its constraint' do
-          property_definitions.merge!('beta' => ValueDefinition.new(SpecConstraints::InvalidConstraint.new, false))
+          property_definitions.merge!('beta' => ValueProperty.new(SpecConstraints::InvalidConstraint.new, false))
           expect(schema.validate(configuration)).not_to be_valid
         end
       end
