@@ -3,14 +3,6 @@
 require 'spec_helper'
 require 'support/spec_constraints'
 
-class FakeConfiguration < Hash
-  def initialize(properties)
-    replace(properties)
-  end
-  alias :has_property? :has_key?
-  alias :properties :keys
-end
-
 module Upset
   module Definition
     describe Schema do
@@ -26,7 +18,7 @@ module Upset
       end
 
       let :configuration do
-        FakeConfiguration.new('alpha' => 1, 'beta' => 2)
+        { 'alpha' => 1, 'beta' => 2 }
       end
 
       describe '#validate' do
