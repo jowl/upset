@@ -23,11 +23,13 @@ module Upset
       merge_providers if dirty?
       @configuration.has_key?(property)
     end
+    alias :has_key? :has_property?
 
     def properties
       merge_providers if dirty?
       @configuration.keys
     end
+    alias :keys :properties
 
     private
 
