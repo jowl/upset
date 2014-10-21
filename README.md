@@ -29,6 +29,17 @@ changed without having to touch the code using the configured
 values. (Built-in support for hard-coded strings, YAML,
 key-value-files, ...?)
 
+## Transformation
+
+It is sometimes impossible or inconvenient to encode all information
+about a property in a configuration file. An obvious example is data
+types, which isn't defined in all file formats. Casting strings to
+other data type is a common task when handling configuration, and it
+could therefor be beneficial to extract this functionality to a common
+library. More complex transformations could include inlining
+configuration by creating additional providers as specified by the
+original configuration.
+
 ## Inspection
 
 It is not possible to determine which configuration is being used in
