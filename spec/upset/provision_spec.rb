@@ -16,9 +16,9 @@ module Upset
         end
       end
 
-      describe '#reload' do
+      describe '#setup' do
         it 'returns self' do
-          expect(provider.reload).to eq(provider)
+          expect(provider.setup).to eq(provider)
         end
       end
     end

@@ -29,15 +29,19 @@ module Upset
         file.flush
       end
 
-      describe '#reload' do
+      describe '#setup' do
         it "re-reads config file" do
-          expect(provider).to eq(properties)
+          properties.each do |property, value|
+            expect(provider[property]).to eq(value)
+          end
           new_properties = properties.merge('gamma' => 3)
           file.rewind
           file.write(new_properties.to_yaml)
           file.flush
-          provider.reload
-          expect(provider).to eq(new_properties)
+          provider.setup
+          new_properties.each do |property, value|
+            expect(provider[property]).to eq(value)
+          end
         end
       end
     end

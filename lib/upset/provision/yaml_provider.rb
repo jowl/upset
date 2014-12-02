@@ -9,8 +9,9 @@ module Upset
         @path = path
       end
 
-      def reload
-        replace(YAML.load_file(@path))
+      def setup
+        @properties = YAML.load_file(@path)
+        self
       end
     end
   end
