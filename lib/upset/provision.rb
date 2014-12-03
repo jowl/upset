@@ -16,7 +16,7 @@ module Upset
       end
 
       def keys
-        @properties.keys
+        @properties ? @properties.keys : []
       end
 
       def has_key?(property)
