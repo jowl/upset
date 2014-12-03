@@ -33,8 +33,8 @@ shared_examples 'a provider' do
       expect(provider[properties.keys.first]).to be_a(Upset::Provision::PropertyValue)
     end
 
-    it 'returns a MissingValue' do
-      expect(provider['missing-parameter']).to be_a(Upset::Provision::MissingValue)
+    it 'returns nil for non-existing properties' do
+      expect(provider['missing-parameter']).to be_nil
     end
   end
 end

@@ -19,7 +19,7 @@ module Upset
       end
 
       let :provider do
-        described_class.setup(file.path)
+        described_class.new(file.path).setup
       end
 
       it_behaves_like 'a provider'
