@@ -24,7 +24,17 @@ shared_examples 'a provider' do
 
   it 'has the expected properties' do
     properties.each do |property, value|
-      expect(provider[property]).to eq(value)
+      expect(provider[property].value).to eq(value)
+    end
+  end
+
+  describe '#[]' do
+    it 'returns a PropertyValue' do
+      expect(provider[properties.keys.first]).to be_a(Upset::Provision::PropertyValue)
+    end
+
+    it 'returns a MissingValue' do
+      expect(provider['missing-parameter']).to be_a(Upset::Provision::MissingValue)
     end
   end
 end

@@ -32,7 +32,7 @@ module Upset
       describe '#setup' do
         it "re-reads config file" do
           properties.each do |property, value|
-            expect(provider[property]).to eq(value)
+            expect(provider[property].value).to eq(value)
           end
           new_properties = properties.merge('gamma' => 3)
           file.rewind
@@ -40,7 +40,7 @@ module Upset
           file.flush
           provider.setup
           new_properties.each do |property, value|
-            expect(provider[property]).to eq(value)
+            expect(provider[property].value).to eq(value)
           end
         end
       end
