@@ -7,3 +7,4 @@ end
 require 'upset/configuration'
 require 'upset/definition'
 require 'upset/provision'
+require 'upset/property_value'

@@ -29,14 +29,6 @@ module Upset
         properties[property]
       end
     end
-
-    class PropertyValue
-      attr_reader :provider, :value
-      def initialize(provider, value)
-        @provider = provider
-        @value = value
-      end
-    end
   end
 end
 

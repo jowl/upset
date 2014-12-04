@@ -33,7 +33,7 @@ shared_examples 'provider_common' do
 
   describe '#[]' do
     it 'returns a PropertyValue' do
-      expect(provider[property]).to be_a(Upset::Provision::PropertyValue)
+      expect(provider[property]).to be_a(Upset::PropertyValue)
     end
 
     it 'returns nil for non-existing properties' do
