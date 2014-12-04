@@ -5,7 +5,7 @@ module Upset
     class Provider
       def [](property)
         if has_key?(property)
-          PropertyValue.new(self, @properties[property])
+          PropertyValue.new(self, get(property))
         end
       end
 
@@ -15,6 +15,12 @@ module Upset
 
       def has_key?(property)
         !!@properties && @properties.has_key?(property)
+      end
+
+      protected
+
+      def get(property)
+        @properties[property]
       end
     end
 
