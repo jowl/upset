@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 shared_examples 'provider_common' do
-  let :property do
+  let :key do
     properties.keys.first
   end
 
@@ -10,8 +10,8 @@ shared_examples 'provider_common' do
   end
 
   it 'has the expected properties' do
-    properties.each do |property, value|
-      expect(provider[property].value).to eq(value)
+    properties.each do |key, value|
+      expect(provider[key].value).to eq(value)
     end
   end
 
@@ -22,18 +22,18 @@ shared_examples 'provider_common' do
   end
 
   describe '#has_key?' do
-    it 'returns true if there is a property with the given name' do
-      expect(provider).to have_key(property)
+    it 'returns true if there is a property with the given key' do
+      expect(provider).to have_key(key)
     end
 
-    it 'returns false if there is no property with the given name' do
+    it 'returns false if there is no property with the given key' do
       expect(provider).not_to have_key('non-existing-property')
     end
   end
 
   describe '#[]' do
-    it 'returns a PropertyValue' do
-      expect(provider[property]).to be_a(Upset::PropertyValue)
+    it 'returns a Property' do
+      expect(provider[key]).to be_a(Upset::Property)
     end
 
     it 'returns nil for non-existing properties' do

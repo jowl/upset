@@ -7,9 +7,9 @@ module Upset
         @properties = properties
       end
 
-      def [](property)
-        if has_key?(property)
-          PropertyValue.new(self, get(property))
+      def [](key)
+        if has_key?(key)
+          Property.new(self, key, get(key))
         end
       end
 
@@ -17,16 +17,16 @@ module Upset
         properties.keys
       end
 
-      def has_key?(property)
-        !!properties && properties.has_key?(property)
+      def has_key?(key)
+        !!properties && properties.has_key?(key)
       end
 
       protected
 
       attr_accessor :properties
 
-      def get(property)
-        properties[property]
+      def get(key)
+        properties[key]
       end
     end
   end

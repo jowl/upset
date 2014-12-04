@@ -1,10 +1,11 @@
 # encoding: utf-8
 
 module Upset
-  class PropertyValue
-    attr_reader :provider
-    def initialize(provider, value)
+  class Property
+    attr_reader :provider, :key
+    def initialize(provider, key, value)
       @provider = provider
+      @key = key
       @value = deep_freeze(value)
     end
 

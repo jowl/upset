@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 module Upset
-  describe PropertyValue do
+  describe Property do
     let :provider do
       double(:provider)
     end
@@ -12,17 +12,17 @@ module Upset
       'value'
     end
 
-    let :property_value do
-      described_class.new(provider, value)
+    let :property do
+      described_class.new(provider, 'key', value)
     end
 
     describe '#value' do
       it 'returns frozen values' do
-        expect(property_value.value).to be_frozen
+        expect(property.value).to be_frozen
       end
 
       it "doesn't duplicate values" do
-        expect(property_value.value).to equal(value)
+        expect(property.value).to equal(value)
       end
 
       context 'with Hash values' do
@@ -31,8 +31,8 @@ module Upset
         end
 
         it 'ensures all keys and values are frozen' do
-          expect(property_value.value).not_to be_empty
-          property_value.value.each do |key, value|
+          expect(property.value).not_to be_empty
+          property.value.each do |key, value|
             expect(key).to be_frozen
             expect(value).to be_frozen
           end
@@ -45,8 +45,8 @@ module Upset
         end
 
         it 'ensures all entries are frozen' do
-          expect(property_value.value).not_to be_empty
-          expect(property_value.value).to all be_frozen
+          expect(property.value).not_to be_empty
+          expect(property.value).to all be_frozen
         end
       end
     end
