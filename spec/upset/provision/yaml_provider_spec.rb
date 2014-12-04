@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 require 'spec_helper'
-require 'support/provider_shared'
+require 'support/provider_common'
 require 'tempfile'
 
 module Upset
@@ -22,26 +22,21 @@ module Upset
         described_class.new(file.path).setup
       end
 
-      it_behaves_like 'a provider'
-
       before do
         file.write(properties.to_yaml)
         file.flush
       end
 
+      include_examples 'provider_common'
+
       describe '#setup' do
         it "re-reads config file" do
-          properties.each do |property, value|
-            expect(provider[property].value).to eq(value)
-          end
-          new_properties = properties.merge('gamma' => 3)
-          file.rewind
-          file.write(new_properties.to_yaml)
-          file.flush
-          provider.setup
-          new_properties.each do |property, value|
-            expect(provider[property].value).to eq(value)
-          end
+          expect do
+            file.rewind
+            file.write(properties.merge('gamma' => 3).to_yaml)
+            file.flush
+            provider.setup
+          end.to change(provider, :keys)
         end
       end
     end
