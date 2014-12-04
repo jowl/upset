@@ -10,7 +10,7 @@ module Upset
       end
 
       def setup
-        @properties = YAML.load_file(@path)
+        self.properties = YAML.load_file(@path)
         self
       end
     end

@@ -3,6 +3,10 @@
 module Upset
   module Provision
     class Provider
+      def initialize(properties)
+        @properties = properties
+      end
+
       def [](property)
         if has_key?(property)
           PropertyValue.new(self, get(property))
@@ -10,17 +14,19 @@ module Upset
       end
 
       def keys
-        @properties ? @properties.keys : []
+        properties.keys
       end
 
       def has_key?(property)
-        !!@properties && @properties.has_key?(property)
+        !!properties && properties.has_key?(property)
       end
 
       protected
 
+      attr_accessor :properties
+
       def get(property)
-        @properties[property]
+        properties[property]
       end
     end
 
