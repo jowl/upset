@@ -8,53 +8,30 @@ module Upset
       @providers = []
     end
 
-    def [](property)
-      merge_providers if dirty?
-      @configuration[property]
+    def [](key)
+      (property = property(key)) && property.value
     end
 
-    def reload
-      @default_provider.reload
-      @providers.each(&:reload)
-      self
+    def property(key)
+      @providers.reverse_each do |provider|
+        if (property = provider[key])
+          return property
+        end
+      end
+      @default_provider[key]
     end
 
-    def has_property?(property)
-      merge_providers if dirty?
-      @configuration.has_key?(property)
+    def has_property?(key)
+      @providers.reverse_each do |provider|
+        return true if provider.has_key?(key)
+      end
+      @default_provider.has_key?(key)
     end
     alias :has_key? :has_property?
 
     def properties
-      merge_providers if dirty?
-      @configuration.keys
+      @providers.reduce(@default_provider.keys) { |properties, provider| properties | provider.keys }
     end
     alias :keys :properties
-
-    private
-
-    def dirty?
-      @providers != @previous_providers
-    end
-
-    def merge_providers
-      @configuration = deep_freeze(@providers.reduce(@default_provider) { |config, provider| deep_merge(config, provider) })
-      @previous_providers = @providers.dup
-    end
-
-    def deep_merge(hsh, other_hash)
-      hsh.merge(other_hash) do |key, oldval, newval|
-        if oldval.is_a?(Hash) && newval.is_a?(Hash)
-          deep_merge(oldval, newval)
-        else
-          newval
-        end
-      end
-    end
-
-    def deep_freeze(object)
-      object.each(&method(:deep_freeze)) if object.is_a?(Enumerable)
-      object.freeze
-    end
   end
 end

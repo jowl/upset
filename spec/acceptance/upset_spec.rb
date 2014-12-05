@@ -4,15 +4,8 @@ require 'spec_helper'
 
 module Upset
   describe self do
-    let :default_properties do
-      {
-        'alpha' => 'omega',
-        'beta' => 42,
-      }
-    end
-
     let :default_provider do
-      default_properties
+      Provision::Provider.new('alpha' => 'omega', 'beta' => 42)
     end
 
     let :configuration do
@@ -21,7 +14,7 @@ module Upset
 
     describe Configuration do
       before do
-        configuration.providers << { 'beta' => 43 }
+        configuration.providers << Provision::Provider.new('beta' => 43)
       end
 
       it 'prefers the latest added Provider' do
@@ -30,17 +23,6 @@ module Upset
 
       it 'falls back on the default Provider' do
         expect(configuration['alpha']).to eq('omega')
-      end
-
-      context 'when merging different Providers' do
-        before do
-          configuration.providers << {'gamma' => {'a' => {'A' => 1, 'B' => 2}}}
-          configuration.providers << {'gamma' => {'a' => {'B' => 3, 'C' => 4}, 'b' => {}}}
-        end
-
-        it 'does deep merges' do
-          expect(configuration['gamma']).to eq('a' => {'A' => 1, 'B' => 3, 'C' => 4}, 'b' => {})
-        end
       end
     end
 
