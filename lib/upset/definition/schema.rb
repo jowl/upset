@@ -13,14 +13,14 @@ module Upset
           if configuration.has_key?(property)
             validation_result = definition.validate(configuration[property])
             unless validation_result.valid?
-              validation_results << invalid('Invalid property %s: %s' % [property.inspect, validation_result.reason])
+              validation_results << invalid(["Invalid property #{property.inspect}", validation_result.reason])
             end
           else
             validation_results << invalid("Missing #{property.inspect}") unless definition.optional?
           end
         end
         if !(unknown = configuration.keys - @property_definitions.keys).empty?
-          validation_results << invalid('Unknown property(s): %s' % unknown.map(&:inspect).join(', '))
+          validation_results << invalid(['Unknown properties', unknown])
         end
         ValidationResult.join(validation_results)
       end
