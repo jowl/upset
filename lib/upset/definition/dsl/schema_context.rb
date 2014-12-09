@@ -8,9 +8,9 @@ module Upset
       class SchemaContext
         include Constraints
 
-        def initialize(&block)
+        def initialize(&schema_definition)
           @property_definitions = {}
-          instance_exec(&block)
+          instance_exec(&schema_definition) if schema_definition
         end
 
         def required_property(key, constraint=nil, &block)

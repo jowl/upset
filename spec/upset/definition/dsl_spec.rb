@@ -136,6 +136,22 @@ module Upset
             expect { validator }.to raise_error(described_class::SchemaError)
           end
         end
+
+        context 'when called multiple times' do
+          let :validator do
+            Class.new.class_exec(described_class) do |dsl_module|
+              include dsl_module
+              schema { required_property 'alpha' }
+              schema { required_property 'beta' }
+            end.new
+          end
+
+          it 'combines the definitions' do
+            expect(validator.validate('alpha' => nil)).not_to be_valid
+            expect(validator.validate('beta' => nil)).not_to be_valid
+            expect(validator.validate('alpha' => nil, 'beta' => nil)).to be_valid
+          end
+        end
       end
     end
   end

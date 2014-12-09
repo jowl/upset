@@ -51,9 +51,6 @@ module Upset
           expect(schema.validate(configuration)).not_to be_valid
         end
       end
-
-      describe '#describe' do
-      end
     end
   end
 end

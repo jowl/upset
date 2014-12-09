@@ -15,8 +15,9 @@ module Upset
 
       module SchemaDsl
         def schema(&block)
-          return @schema unless block_given?
-          @schema = SchemaContext.new(&block).build
+          return @schema_context.build unless block_given?
+          @schema_context ||= SchemaContext.new
+          @schema_context.instance_exec(&block)
           self
         end
       end
