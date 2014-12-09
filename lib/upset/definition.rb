@@ -44,3 +44,4 @@ end
 require 'upset/definition/property_definition'
 require 'upset/definition/schema'
 require 'upset/definition/constraint'
+require 'upset/definition/dsl'
