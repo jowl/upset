@@ -4,15 +4,15 @@ module Upset
   module Definition
     module Dsl
       module Constraints
-        def kind(kind)
+        def is_a(kind)
           KindConstraint.new(kind)
         end
 
-        def matching(pattern)
+        def matches(pattern)
           RegexpConstraint.new(pattern)
         end
 
-        def all(constraint)
+        def each_member(constraint)
           MemberConstraint.new(constraint)
         end
 

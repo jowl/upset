@@ -29,7 +29,7 @@ module Upset
         describe '#optional_property' do
           let :validator do
             schema do
-              optional_property('alpha')
+              optional_property 'alpha'
             end
           end
 
@@ -43,7 +43,7 @@ module Upset
           describe '#kind' do
             let :validator do
               schema do
-                required_property('alpha').is kind(String)
+                required_property 'alpha', is_a(String)
               end
             end
 
@@ -56,7 +56,7 @@ module Upset
           describe '#matching' do
             let :validator do
               schema do
-                required_property('alpha').is matching(/[A-Z]+/)
+                required_property 'alpha', matches(/[A-Z]+/)
               end
             end
 
@@ -69,7 +69,7 @@ module Upset
           describe '#all' do
             let :validator do
               schema do
-                required_property('alpha').are all kind(Integer)
+                required_property 'alpha', each_member(is_a(Integer))
               end
             end
 
@@ -82,7 +82,7 @@ module Upset
           describe '#either' do
             let :validator do
               schema do
-                required_property('alpha').is either kind(String), kind(NilClass)
+                required_property 'alpha', either(is_a(String), is_a(NilClass))
               end
             end
 
@@ -96,7 +96,7 @@ module Upset
           describe '#either' do
             let :validator do
               schema do
-                required_property('alpha').is both matching(/^A/), matching(/Z$/)
+                required_property 'alpha', both(matches(/^A/), matches(/Z$/))
               end
             end
 
@@ -111,8 +111,8 @@ module Upset
         context 'when nesting schemas' do
           let :validator do
             schema do
-              optional_property('alpha') do
-                required_property('beta')
+              optional_property 'alpha' do
+                required_property 'beta'
               end
             end
           end
@@ -120,6 +120,20 @@ module Upset
           it 'adds definitions for nested properties' do
             expect(validator.validate('alpha' => { })).not_to be_valid
             expect(validator.validate('alpha' => { 'beta' => nil })).to be_valid
+          end
+        end
+
+        context 'when nesting schemas and defining constraints' do
+          let :validator do
+            schema do
+              optional_property 'alpha', is_a(String) do
+                required_property 'beta'
+              end
+            end
+          end
+
+          it 'raises SchemaError' do
+            expect { validator }.to raise_error(described_class::SchemaError)
           end
         end
       end

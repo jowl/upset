@@ -9,63 +9,38 @@ module Upset
         include Constraints
 
         def initialize(&block)
-          @property_contexts = {}
+          @property_definitions = {}
           instance_exec(&block)
         end
 
-        def required_property(key, &block)
-          add_property_context(key, false, &block)
+        def required_property(key, constraint=nil, &block)
+          add_property_definition(key, false, constraint, block)
         end
 
-        def optional_property(key, &block)
-          add_property_context(key, true, &block)
+        def optional_property(key, constraint=nil, &block)
+          add_property_definition(key, true, constraint, block)
         end
 
         def build
-          Schema.new(property_definitions)
+          Schema.new(@property_definitions)
         end
 
         private
 
-        def add_property_context(key, optional, &block)
-          if block_given?
-            @property_contexts[key] = SchemaPropertyContext.new(optional, &block)
+        def add_property_definition(key, optional, constraint, schema_definition)
+          if schema_definition && constraint
+            raise SchemaError, "Property #{key.inspect} has both constraint and schema"
+          elsif schema_definition
+            schema = SchemaContext.new(&schema_definition).build
+            @property_definitions[key] = SchemaProperty.new(schema, optional)
           else
-            @property_contexts[key] = ValuePropertyContext.new(optional)
-          end
-        end
-
-        def property_definitions
-          @property_contexts.each_with_object({}) { |(k, ctx), h| h[k] = ctx.build }
-        end
-
-        class SchemaPropertyContext
-          def initialize(optional, &block)
-            @optional = optional
-            @schema = SchemaContext.new(&block).build
-          end
-
-          def build
-            SchemaProperty.new(@schema, @optional)
-          end
-        end
-
-        class ValuePropertyContext
-          def initialize(optional)
-            @optional = optional
-            @constraint = ValidConstraint.new
-          end
-
-          def is(constraint)
-            @constraint = constraint
-          end
-          alias :are :is
-
-          def build
-            ValueProperty.new(@constraint, @optional)
+            constraint ||= ValidConstraint.new
+            @property_definitions[key] = ValueProperty.new(constraint, optional)
           end
         end
       end
+
+      SchemaError = Class.new(UpsetError)
     end
   end
 end
