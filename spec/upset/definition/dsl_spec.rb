@@ -6,7 +6,10 @@ module Upset
   module Definition
     describe Dsl do
       def schema(&block)
-        Class.new.include(described_class).class_exec { schema(&block) }.new
+        Class.new.class_exec(described_class) do |dsl_module|
+          include dsl_module
+          schema(&block)
+        end.new
       end
 
       describe '#schema' do
