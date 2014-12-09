@@ -1,49 +1,23 @@
 # encoding: utf-8
 
+require 'upset/definition/dsl/schema_context'
+
 module Upset
   module Definition
-    class Dsl
-      def initialize(properties)
-        @properties = properties
+    module Dsl
+      def self.included(mod)
+        mod.extend(SchemaDsl)
       end
 
-      def valid?
-        Schema.new(self.class.property_definitions).validate(@properties).valid?
+      def validate(configuration=self)
+        self.class.schema.validate(configuration)
       end
 
-      private
-
-      def self.property_definitions
-        @property_definitions
-      end
-
-      def self.required(key, constraint_definition=nil)
-        add_property_definition(key, false, constraint_definition)
-      end
-
-      def self.optional(key, constraint_definition=nil)
-        add_property_definition(key, true, constraint_definition)
-      end
-
-      def self.add_property_definition(key, optional, constraint_definition)
-        @property_definitions ||= {}
-        @property_definitions[key] = ValueProperty.new(create_constraint(constraint_definition), optional)
-      end
-
-      def self.create_constraint(constraint_definition)
-        if constraint_definition
-          constraints = constraint_definition.map do |type, options|
-            case type
-            when :kind then KindConstraint.new(options)
-            when :regexp then RegexpConstraint.new(options)
-            when :member then MemberConstraint.new(create_constraint(options))
-            when :any then DisjunctiveConstraint.new(*options.map(&method(:create_constraint)))
-            when :all then ConjunctiveConstraint.new(*options.map(&method(:create_constraint)))
-            end
-          end
-          ConjunctiveConstraint.new(*constraints)
-        else
-          ValidConstraint.new
+      module SchemaDsl
+        def schema(&block)
+          return @schema unless block_given?
+          @schema = SchemaContext.new(&block).build
+          self
         end
       end
     end

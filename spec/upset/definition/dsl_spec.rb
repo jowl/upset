@@ -5,65 +5,82 @@ require 'spec_helper'
 module Upset
   module Definition
     describe Dsl do
-      let :config_class do
-        Class.new(described_class).tap do |cls|
-          cls.class_exec do
-            required 'alpha'
-            optional 'beta', kind: String
-            optional 'gamma', regexp: /[A-Z]+/
-            optional 'delta', member: { kind: Integer }
-            optional 'epsilon', any: [{kind: NilClass}, {kind: String}]
-            optional 'zeta', all: [{regexp: /^A/}, {regexp: /Z$/}]
+      let :validator do
+        Class.new.include(described_class).class_exec do
+          schema do
+            required_property('alpha')
+            optional_property('beta').is kind(String)
+            optional_property('gamma').is matching(/[A-Z]+/)
+            optional_property('delta').are all kind(Integer)
+            optional_property('epsilon').is either kind(NilClass), kind(String)
+            optional_property('zeta').is both matching(/^A/), matching(/Z$/)
+            optional_property('eta') do
+              required_property('theta')
+            end
+          end
+        end.new
+      end
+
+      describe '#schema' do
+        describe '#required_property' do
+          it 'adds a required property' do
+            expect(validator.validate('alpha' => nil)).to be_valid
+            expect(validator.validate({})).not_to be_valid
           end
         end
-      end
 
-      describe '#required' do
-        it 'adds a required property' do
-          expect(config_class.new('alpha' => nil)).to be_valid
-          expect(config_class.new({})).not_to be_valid
-        end
-      end
+        describe '#optional_property' do
+          let :properties do
+            { 'alpha' => nil }
+          end
 
-      describe '#optional' do
-        let :properties do
-          { 'alpha' => nil }
+          it 'adds an optional property' do
+            expect(validator.validate(properties)).to be_valid
+            expect(validator.validate(properties.merge('beta' => 'B'))).to be_valid
+          end
         end
 
-        it 'adds an optional property' do
-          expect(config_class.new(properties)).to be_valid
-          expect(config_class.new(properties.merge('beta' => 'B'))).to be_valid
-        end
-      end
+        context 'when creating constraints' do
+          let :properties do
+            { 'alpha' => nil }
+          end
 
-      context 'when creating constraints' do
-        let :properties do
-          { 'alpha' => nil }
+          it 'can create KindConstraint' do
+            expect(validator.validate(properties.merge('beta' => 'B'))).to be_valid
+            expect(validator.validate(properties.merge('beta' => nil))).not_to be_valid
+          end
+
+          it 'can create RegexpConstraint' do
+            expect(validator.validate(properties.merge('gamma' => 'ABC'))).to be_valid
+            expect(validator.validate(properties.merge('gamma' => 'abc'))).not_to be_valid
+          end
+
+          it 'can create MemberConstraint' do
+            expect(validator.validate(properties.merge('delta' => [1, 2, 3]))).to be_valid
+            expect(validator.validate(properties.merge('delta' => [1, nil, 3]))).not_to be_valid
+          end
+
+          it 'can create DisjunctiveConstraint' do
+            expect(validator.validate(properties.merge('epsilon' => nil))).to be_valid
+            expect(validator.validate(properties.merge('epsilon' => 'E'))).to be_valid
+            expect(validator.validate(properties.merge('epsilon' => 1))).not_to be_valid
+          end
+
+          it 'can create ConjunctiveConstraint' do
+            expect(validator.validate(properties.merge('zeta' => 'A-Z'))).to be_valid
+            expect(validator.validate(properties.merge('zeta' => 'B-Y'))).not_to be_valid
+          end
         end
 
-        it 'can create KindConstraint' do
-          expect(config_class.new(properties.merge('beta' => 'B'))).to be_valid
-          expect(config_class.new(properties.merge('beta' => nil))).not_to be_valid
-        end
+        context 'when nesting schemas' do
+          let :properties do
+            { 'alpha' => nil }
+          end
 
-        it 'can create RegexpConstraint' do
-          expect(config_class.new(properties.merge('gamma' => 'ABC'))).to be_valid
-          expect(config_class.new(properties.merge('gamma' => 'abc'))).not_to be_valid
-        end
-
-        it 'can create MemberConstraint' do
-          expect(config_class.new(properties.merge('delta' => [1, 2, 3]))).to be_valid
-          expect(config_class.new(properties.merge('delta' => [1, nil, 3]))).not_to be_valid
-        end
-
-        it 'can create DisjunctiveConstraint' do
-          expect(config_class.new(properties.merge('epsilon' => nil))).to be_valid
-          expect(config_class.new(properties.merge('epsilon' => 1))).not_to be_valid
-        end
-
-        it 'can create ConjunctiveConstraint' do
-          expect(config_class.new(properties.merge('zeta' => 'A-Z'))).to be_valid
-          expect(config_class.new(properties.merge('zeta' => 'B-Y'))).not_to be_valid
+          it 'adds definitions for nested properties' do
+            expect(validator.validate(properties.merge('eta' => { }))).not_to be_valid
+            expect(validator.validate(properties.merge('eta' => { 'theta' => nil }))).to be_valid
+          end
         end
       end
     end
