@@ -4,8 +4,7 @@ module Upset
   module Definition
     class EvaluatedConstraint
       attr_reader :reason
-      def initialize(satisfied, reason)
-        @satisfied = satisfied
+      def initialize(reason)
         @reason = reason
       end
 
@@ -14,7 +13,7 @@ module Upset
       end
 
       def satisfied?
-        !!@satisfied
+        @reason.nil?
       end
     end
 
@@ -30,12 +29,12 @@ module Upset
       end
 
       def unsatisfied(reason)
-        EvaluatedConstraint.new(false, reason)
+        EvaluatedConstraint.new(reason)
       end
 
       private
 
-      SATISFIED_CONSTRAINT = EvaluatedConstraint.new(true, nil)
+      SATISFIED_CONSTRAINT = EvaluatedConstraint.new(nil)
     end
 
     AlreadyEvaluatedError = Class.new(UpsetError)

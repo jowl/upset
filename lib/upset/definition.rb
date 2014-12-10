@@ -10,31 +10,30 @@ module Upset
       protected
 
       def valid
-        ValidationResult.new(true, nil)
+        ValidationResult.new(nil)
       end
 
       def invalid(reason)
-        ValidationResult.new(false, reason)
+        ValidationResult.new(reason)
       end
     end
 
     class ValidationResult
       attr_reader :reason
-      def initialize(valid, reason)
-        @valid = valid
+      def initialize(reason)
         @reason = Array(reason)
       end
 
       def valid?
-        !!@valid
+        @reason.empty?
       end
 
       def self.join(results)
         invalid_results = results.reject(&:valid?)
         if invalid_results.empty?
-          new(true, nil)
+          new(nil)
         else
-          new(false, invalid_results.map(&:reason))
+          new(invalid_results.map(&:reason))
         end
       end
     end
