@@ -50,6 +50,22 @@ module Upset
           property_definitions.merge!('beta' => ValueProperty.new(SpecConstraints::InvalidConstraint.new, false))
           expect(schema.validate(configuration)).not_to be_valid
         end
+
+        context 'when there is a default property definition' do
+          let :configuration do
+            super().merge('gamma' => nil)
+          end
+
+          it 'returns a valid result when all undefined properties satisfies the default constraint' do
+            property_definitions.default = ValueProperty.new(ValidConstraint.new, true)
+            expect(schema.validate(configuration)).to be_valid
+          end
+
+          it "returns an invalid result when any undefined property fails to satisfy the default constraint" do
+            property_definitions.default = ValueProperty.new(SpecConstraints::InvalidConstraint.new, true)
+            expect(schema.validate(configuration)).not_to be_valid
+          end
+        end
       end
     end
   end
