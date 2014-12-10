@@ -140,9 +140,7 @@ module Upset
         context 'when nesting schemas and defining constraints' do
           let :validator do
             schema do
-              optional_property 'alpha', is_a(String) do
-                required_property 'beta'
-              end
+              optional_property('alpha', is_a(String)) {}
             end
           end
 

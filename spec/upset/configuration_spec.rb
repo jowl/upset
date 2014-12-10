@@ -51,8 +51,13 @@ module Upset
     end
 
     describe '#has_property?' do
-      it 'returns true if the given property is defined' do
+      it 'returns true if the given property is defined in the default provider' do
         expect(configuration).to have_property('alpha')
+      end
+
+      it 'returns true if the given property is defined in another provider' do
+        configuration.providers = [provide('delta' => nil)]
+        expect(configuration).to have_property('delta')
       end
 
       it 'returns false if the given property is not defined' do
