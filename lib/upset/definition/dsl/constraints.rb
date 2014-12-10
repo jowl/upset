@@ -7,6 +7,7 @@ module Upset
         def is_a(kind)
           KindConstraint.new(kind)
         end
+        alias :is_an :is_a
 
         def matches(pattern)
           RegexpConstraint.new(pattern)

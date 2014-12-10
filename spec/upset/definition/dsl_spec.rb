@@ -69,7 +69,7 @@ module Upset
           describe '#all' do
             let :validator do
               schema do
-                required_property 'alpha', each_member(is_a(Integer))
+                required_property 'alpha', each_member(is_an(Integer))
               end
             end
 
