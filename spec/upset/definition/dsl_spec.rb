@@ -154,20 +154,28 @@ module Upset
         end
 
         context 'when subclassing' do
-          let :validator do
-            super_class = Class.new.class_exec(described_class) do |dsl_module|
+          let :validator_class do
+            superclass = Class.new.class_exec(described_class) do |dsl_module|
               include dsl_module
               schema { required_property 'alpha' }
             end
-            Class.new(super_class).class_exec do
+            Class.new(superclass).class_exec do
               schema { required_property 'beta' }
-            end.new
+            end
           end
 
           it 'inherits the definitions' do
+            validator = validator_class.new
             expect(validator.validate('alpha' => nil)).not_to be_valid
             expect(validator.validate('beta' => nil)).not_to be_valid
             expect(validator.validate('alpha' => nil, 'beta' => nil)).to be_valid
+          end
+
+          it "doesn't change the superclass' schema" do
+            validator = validator_class.superclass.new
+            expect(validator.validate('alpha' => nil)).to be_valid
+            expect(validator.validate('beta' => nil)).not_to be_valid
+            expect(validator.validate('alpha' => nil, 'beta' => nil)).not_to be_valid
           end
         end
       end

@@ -23,7 +23,7 @@ module Upset
         def schema_context
           @schema_context ||= begin
             if superclass.respond_to?(:schema_context)
-              superclass.schema_context
+              superclass.schema_context.dup
             else
               SchemaContext.new
             end

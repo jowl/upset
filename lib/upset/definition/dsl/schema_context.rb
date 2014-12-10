@@ -8,6 +8,7 @@ module Upset
       class SchemaContext
         include Constraints
 
+        attr_reader :property_definitions
         def initialize(&schema_definition)
           @property_definitions = {}
           instance_exec(&schema_definition) if schema_definition
@@ -26,6 +27,11 @@ module Upset
         end
 
         private
+
+        def initialize_dup(other)
+          super
+          @property_definitions = other.property_definitions.dup
+        end
 
         def add_property_definition(key, optional, constraint, schema_definition)
           if schema_definition && constraint
