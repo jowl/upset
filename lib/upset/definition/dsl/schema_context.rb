@@ -15,11 +15,15 @@ module Upset
         end
 
         def required_property(key, constraint=nil, &block)
-          add_property_definition(key, false, constraint, block)
+          @property_definitions[key] = property_definition(false, constraint, block, key)
         end
 
         def optional_property(key, constraint=nil, &block)
-          add_property_definition(key, true, constraint, block)
+          @property_definitions[key] = property_definition(true, constraint, block, key)
+        end
+
+        def default(constraint=nil, &block)
+          @property_definitions.default = property_definition(true, constraint, block)
         end
 
         def build
@@ -33,15 +37,16 @@ module Upset
           @property_definitions = other.property_definitions.dup
         end
 
-        def add_property_definition(key, optional, constraint, schema_definition)
+        def property_definition(optional, constraint, schema_definition, key=nil)
           if schema_definition && constraint
-            raise SchemaError, "Property #{key.inspect} has both constraint and schema"
+            key = key ? "Property #{key.inspect}" : 'Default property'
+            raise SchemaError, "#{key} has both constraint and schema"
           elsif schema_definition
             schema = SchemaContext.new(&schema_definition).build
-            @property_definitions[key] = SchemaProperty.new(schema, optional)
+            SchemaProperty.new(schema, optional)
           else
             constraint ||= ValidConstraint.new
-            @property_definitions[key] = ValueProperty.new(constraint, optional)
+            ValueProperty.new(constraint, optional)
           end
         end
       end

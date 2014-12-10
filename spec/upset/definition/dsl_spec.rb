@@ -39,6 +39,20 @@ module Upset
           end
         end
 
+        describe '#default' do
+          let :validator do
+            schema do
+              default is_a(String)
+            end
+          end
+
+          it 'sets a default property definition' do
+            expect(validator.validate({})).to be_valid
+            expect(validator.validate('alpha' => 'A')).to be_valid
+            expect(validator.validate('alpha' => nil)).not_to be_valid
+          end
+        end
+
         context 'with constraints' do
           describe '#is_a' do
             let :validator do
