@@ -15,10 +15,19 @@ module Upset
 
       module SchemaDsl
         def schema(&block)
-          return @schema_context.build unless block_given?
-          @schema_context ||= SchemaContext.new
-          @schema_context.instance_exec(&block)
+          return schema_context.build unless block_given?
+          schema_context.instance_exec(&block)
           self
+        end
+
+        def schema_context
+          @schema_context ||= begin
+            if superclass.respond_to?(:schema_context)
+              superclass.schema_context
+            else
+              SchemaContext.new
+            end
+          end
         end
       end
     end
