@@ -40,7 +40,7 @@ module Upset
         end
 
         context 'with constraints' do
-          describe '#kind' do
+          describe '#is_a' do
             let :validator do
               schema do
                 required_property 'alpha', is_a(String)
@@ -53,7 +53,7 @@ module Upset
             end
           end
 
-          describe '#matching' do
+          describe '#matches' do
             let :validator do
               schema do
                 required_property 'alpha', matches(/[A-Z]+/)
@@ -66,7 +66,7 @@ module Upset
             end
           end
 
-          describe '#all' do
+          describe '#each_member' do
             let :validator do
               schema do
                 required_property 'alpha', each_member(is_an(Integer))
