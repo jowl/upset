@@ -41,11 +41,11 @@ module Upset
     end
 
     describe '#fetch' do
-      it 'returns the property value from a provider' do
+      it 'returns a property value from a provider' do
         expect(configuration.fetch('alpha', 1)).to eq([])
       end
 
-      it 'returns the property value from a provider, even if falsy' do
+      it 'returns a property value from a provider, even if falsy' do
         expect(configuration.fetch('beta', 1)).to eq(false)
       end
 
