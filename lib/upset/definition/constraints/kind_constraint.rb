@@ -9,10 +9,16 @@ module Upset
 
       def evaluate(value)
         if value.kind_of?(@kind)
-          satisfied
+          kind_safe_evaluate(value)
         else
           unsatisfied('Expected %s, got %s' % [@kind.name, value.class.name])
         end
+      end
+
+      protected
+
+      def kind_safe_evaluate(_)
+        satisfied
       end
     end
   end

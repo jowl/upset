@@ -9,15 +9,13 @@ module Upset
         super(String)
       end
 
-      def evaluate(value)
-        if (kind_constraint = super(value)).satisfied?
-          if File.exists?(value)
-            satisfied
-          else
-            unsatisfied('%s does not exist' % value)
-          end
+      private
+
+      def kind_safe_evaluate(value)
+        if File.exists?(value)
+          satisfied
         else
-          kind_constraint
+          unsatisfied('%s does not exist' % value)
         end
       end
     end

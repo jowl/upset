@@ -48,7 +48,7 @@ module Upset
           end
 
           it 'returns an unsatisfied constraint with a sensible reason' do
-            expect(constraint.evaluate(value).reason).to match(/expected.+{}.+to match.+\^alpha\$/i)
+            expect(constraint.evaluate(value).reason).to match(/expected.+string.+got.+hash/i)
           end
         end
       end

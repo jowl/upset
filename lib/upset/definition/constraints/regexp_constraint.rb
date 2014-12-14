@@ -1,14 +1,19 @@
 # encoding: utf-8
 
+require 'upset/definition/constraints/kind_constraint'
+
 module Upset
   module Definition
-    class RegexpConstraint < Constraint
+    class RegexpConstraint < KindConstraint
       def initialize(pattern)
         @pattern = pattern
+        super(String)
       end
 
-      def evaluate(value)
-        if value.is_a?(String) && @pattern =~ value
+      private
+
+      def kind_safe_evaluate(value)
+        if @pattern =~ value
           satisfied
         else
           unsatisfied('Expected %s to match %s' % [value.inspect, @pattern.inspect])

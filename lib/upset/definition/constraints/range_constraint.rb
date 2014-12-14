@@ -11,23 +11,19 @@ module Upset
         super(Comparable)
       end
 
-      def evaluate(value)
-        if (kind_constraint = super(value)).satisfied?
-          if satisfies_lower?(value) && satisfies_upper?(value)
-            satisfied
-          elsif @lower.nil?
-            unsatisfied 'Expected %s to be less than %s' % [value, @upper]
-          elsif @upper.nil?
-            unsatisfied 'Expected %s to be greater than %s' % [value, @lower]
-          else
-            unsatisfied 'Expected %s to be between %s and %s' % [value, @lower, @upper]
-          end
+      private
+
+      def kind_safe_evaluate(value)
+        if satisfies_lower?(value) && satisfies_upper?(value)
+          satisfied
+        elsif @lower.nil?
+          unsatisfied 'Expected %s to be less than %s' % [value, @upper]
+        elsif @upper.nil?
+          unsatisfied 'Expected %s to be greater than %s' % [value, @lower]
         else
-          kind_constraint
+          unsatisfied 'Expected %s to be between %s and %s' % [value, @lower, @upper]
         end
       end
-
-      private
 
       def satisfies_upper?(value)
         @upper.nil? || value <= @upper
