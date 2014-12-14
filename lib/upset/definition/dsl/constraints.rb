@@ -17,6 +17,18 @@ module Upset
           FileConstraint.new
         end
 
+        def is_between(lower, upper)
+          RangeConstraint.new(lower, upper)
+        end
+
+        def is_above(lower)
+          is_between(lower, nil)
+        end
+
+        def is_below(upper)
+          is_between(nil, upper)
+        end
+
         def each_member(constraint)
           MemberConstraint.new(constraint)
         end
