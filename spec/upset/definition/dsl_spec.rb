@@ -170,7 +170,7 @@ module Upset
             end
           end
 
-          describe '#either' do
+          describe '#both' do
             let :validator do
               schema do
                 required_property 'alpha', both(matches(/^A/), matches(/Z$/))
