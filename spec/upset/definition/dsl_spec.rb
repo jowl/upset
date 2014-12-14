@@ -143,6 +143,22 @@ module Upset
             end
           end
 
+          describe '#is_a_positive_integer' do
+            let :validator do
+              schema do
+                required_property 'alpha', is_a_positive_integer
+              end
+            end
+
+            it 'creates RangeConstraint' do
+              expect(validator.validate('alpha' => -1)).not_to be_valid
+              expect(validator.validate('alpha' => 0)).not_to be_valid
+              expect(validator.validate('alpha' => 1)).to be_valid
+              expect(validator.validate('alpha' => 1.0)).not_to be_valid
+            end
+          end
+
+
           describe '#each_member' do
             let :validator do
               schema do

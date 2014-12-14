@@ -29,6 +29,10 @@ module Upset
           is_between(nil, upper)
         end
 
+        def is_a_positive_integer
+          both(is_an(Integer), is_above(1))
+        end
+
         def each_member(constraint)
           MemberConstraint.new(constraint)
         end
