@@ -13,7 +13,7 @@ module Upset
     end
 
     def fetch(key, *default, &block)
-      if has_key?(key)
+      if has_property?(key)
         self[key]
       elsif block_given?
         block.call
