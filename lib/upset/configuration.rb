@@ -25,19 +25,11 @@ module Upset
     end
 
     def property(key)
-      @providers.reverse_each do |provider|
-        if (property = provider[key])
-          return property
-        end
-      end
-      @default_provider[key]
+      first_provider { |provider| provider[key] }
     end
 
     def has_property?(key)
-      @providers.reverse_each do |provider|
-        return true if provider.has_key?(key)
-      end
-      @default_provider.has_key?(key)
+      first_provider { |provider| provider.has_key?(key) }
     end
     alias :has_key? :has_property?
 
@@ -45,5 +37,11 @@ module Upset
       @providers.reduce(@default_provider.keys) { |properties, provider| properties | provider.keys }
     end
     alias :keys :properties
+
+    private
+
+    def first_provider(&block)
+      block.call(@providers.reverse_each.find(&block) || @default_provider)
+    end
   end
 end
