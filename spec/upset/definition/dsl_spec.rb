@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require 'spec_helper'
+require 'tempfile'
 
 module Upset
   module Definition
@@ -77,6 +78,28 @@ module Upset
             it 'creates RegexpConstraint' do
               expect(validator.validate('alpha' => 'ABC')).to be_valid
               expect(validator.validate('alpha' => 'abc')).not_to be_valid
+            end
+          end
+
+          describe '#is_a_file' do
+            let :validator do
+              schema do
+                required_property 'alpha', is_a_file
+              end
+            end
+
+            let :file do
+              Tempfile.new('some-file')
+            end
+
+            after do
+              file.close
+              file.unlink
+            end
+
+            it 'creates FileConstraint' do
+              expect(validator.validate('alpha' => file.path)).to be_valid
+              expect(validator.validate('alpha' => '/not/a/file')).not_to be_valid
             end
           end
 

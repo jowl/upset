@@ -13,6 +13,10 @@ module Upset
           RegexpConstraint.new(pattern)
         end
 
+        def is_a_file
+          FileConstraint.new
+        end
+
         def each_member(constraint)
           MemberConstraint.new(constraint)
         end

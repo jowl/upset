@@ -44,6 +44,7 @@ end
 require 'upset/definition/constraints/conjunctive_constraint'
 require 'upset/definition/constraints/connective_constraint'
 require 'upset/definition/constraints/disjunctive_constraint'
+require 'upset/definition/constraints/file_constraint'
 require 'upset/definition/constraints/kind_constraint'
 require 'upset/definition/constraints/member_constraint'
 require 'upset/definition/constraints/regexp_constraint'
