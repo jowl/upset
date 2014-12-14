@@ -40,6 +40,34 @@ module Upset
       end
     end
 
+    describe '#fetch' do
+      it 'returns the property value from a provider' do
+        expect(configuration.fetch('alpha', 1)).to eq([])
+      end
+
+      it 'returns the property value from a provider, even if falsy' do
+        expect(configuration.fetch('beta', 1)).to eq(false)
+      end
+
+      context 'when the property is unknown' do
+        it 'raises KeyError without default and block' do
+          expect { configuration.fetch('delta') }.to raise_error(KeyError)
+        end
+
+        it 'returns the result from the block' do
+          expect(configuration.fetch('delta') { 1 }).to eq(1)
+        end
+
+        it 'returns the default value' do
+          expect(configuration.fetch('delta', 1)).to eq(1)
+        end
+
+        it 'choses the block over the default value' do
+          expect(configuration.fetch('delta', 1) { 2 }).to eq(2)
+        end
+      end
+    end
+
     describe '#property' do
       it 'returns a Property for existing properties' do
         expect(configuration.property('alpha')).to be_a(Property)

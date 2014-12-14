@@ -12,6 +12,18 @@ module Upset
       (property = property(key)) && property.value
     end
 
+    def fetch(key, *default, &block)
+      if has_key?(key)
+        self[key]
+      elsif block_given?
+        block.call
+      elsif !default.empty?
+        default.first
+      else
+        raise KeyError, 'key not found: %s' % key.inspect
+      end
+    end
+
     def property(key)
       @providers.reverse_each do |provider|
         if (property = provider[key])
