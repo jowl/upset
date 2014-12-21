@@ -6,14 +6,7 @@ module Upset
     def initialize(provider, key, value)
       @provider = provider
       @key = key
-      @value = deep_freeze(value)
-    end
-
-    private
-
-    def deep_freeze(object)
-      object.each(&method(:deep_freeze)) if object.is_a?(Enumerable)
-      object.freeze
+      @value = value
     end
   end
 end

@@ -37,3 +37,5 @@ module Upset
     end
   end
 end
+
+require 'upset/transformation/deep_freeze'
