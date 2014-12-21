@@ -2,15 +2,11 @@
 
 module Upset
   class Property
-    attr_reader :provider, :key
+    attr_reader :provider, :key, :value
     def initialize(provider, key, value)
       @provider = provider
       @key = key
       @value = deep_freeze(value)
-    end
-
-    def value
-      deep_freeze(@value)
     end
 
     private
