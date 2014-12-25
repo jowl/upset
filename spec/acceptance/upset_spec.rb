@@ -14,7 +14,7 @@ module Upset
 
     describe Transformation do
       let :transformer do
-        Transformation::Transformer.new(Provision::Provider.new('beta' => 'psi'), 'beta' => Transformation::DeepFreeze.new)
+        Transformation::Transformer.new(Provision::Provider.new('beta' => 'psi'), 'beta' => Transformation::DeepFreezer.new)
       end
 
       before do

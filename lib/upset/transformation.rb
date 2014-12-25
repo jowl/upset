@@ -38,4 +38,4 @@ module Upset
   end
 end
 
-require 'upset/transformation/deep_freeze'
+require 'upset/transformation/deep_freezer'

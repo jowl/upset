@@ -4,8 +4,8 @@ require 'spec_helper'
 
 module Upset
   module Transformation
-    describe DeepFreeze do
-      let :deep_freeze do
+    describe DeepFreezer do
+      let :deep_freezer do
         described_class.new
       end
 
@@ -14,7 +14,7 @@ module Upset
       end
 
       let :frozen_value do
-        deep_freeze.call(value)
+        deep_freezer.call(value)
       end
 
       describe '#call' do
