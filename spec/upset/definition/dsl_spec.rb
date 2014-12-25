@@ -17,7 +17,7 @@ module Upset
         describe '#required_property' do
           let :validator do
             schema do
-              required_property 'alpha'
+              required 'alpha'
             end
           end
 
@@ -27,10 +27,10 @@ module Upset
           end
         end
 
-        describe '#optional_property' do
+        describe '#optional' do
           let :validator do
             schema do
-              optional_property 'alpha'
+              optional 'alpha'
             end
           end
 
@@ -40,10 +40,10 @@ module Upset
           end
         end
 
-        describe '#default' do
+        describe '#residual' do
           let :validator do
             schema do
-              default is_a(String)
+              residual.is a(String)
             end
           end
 
@@ -55,10 +55,10 @@ module Upset
         end
 
         context 'with constraints' do
-          describe '#is_a' do
+          describe '#a' do
             let :validator do
               schema do
-                required_property 'alpha', is_a(String)
+                required('alpha').is a(String)
               end
             end
 
@@ -68,10 +68,10 @@ module Upset
             end
           end
 
-          describe '#matches' do
+          describe '#matching' do
             let :validator do
               schema do
-                required_property 'alpha', matches(/[A-Z]+/)
+                required('alpha').is matching(/[A-Z]+/)
               end
             end
 
@@ -81,10 +81,10 @@ module Upset
             end
           end
 
-          describe '#is_a_file' do
+          describe '#a_file' do
             let :validator do
               schema do
-                required_property 'alpha', is_a_file
+                required('alpha').is a_file
               end
             end
 
@@ -103,10 +103,10 @@ module Upset
             end
           end
 
-          describe '#is_between' do
+          describe '#between' do
             let :validator do
               schema do
-                required_property 'alpha', is_between(1, 3)
+                required('alpha').is between 1, 3
               end
             end
 
@@ -117,10 +117,10 @@ module Upset
             end
           end
 
-          describe '#is_above' do
+          describe '#above' do
             let :validator do
               schema do
-                required_property 'alpha', is_above(1)
+                required('alpha').is above 1
               end
             end
 
@@ -130,10 +130,10 @@ module Upset
             end
           end
 
-          describe '#is_below' do
+          describe '#below' do
             let :validator do
               schema do
-                required_property 'alpha', is_below(3)
+                required('alpha').is below 3
               end
             end
 
@@ -143,10 +143,10 @@ module Upset
             end
           end
 
-          describe '#is_a_positive_integer' do
+          describe '#a_positive_integer' do
             let :validator do
               schema do
-                required_property 'alpha', is_a_positive_integer
+                required('alpha').is a_positive_integer
               end
             end
 
@@ -158,11 +158,10 @@ module Upset
             end
           end
 
-
-          describe '#each_member' do
+          describe '#all' do
             let :validator do
               schema do
-                required_property 'alpha', each_member(is_an(Integer))
+                required('alpha').are all an(Integer)
               end
             end
 
@@ -175,7 +174,7 @@ module Upset
           describe '#either' do
             let :validator do
               schema do
-                required_property 'alpha', either(is_a(String), is_a(NilClass))
+                required('alpha').is either a(String), a(NilClass)
               end
             end
 
@@ -189,7 +188,7 @@ module Upset
           describe '#both' do
             let :validator do
               schema do
-                required_property 'alpha', both(matches(/^A/), matches(/Z$/))
+                required('alpha').is both matching(/^A/), matching(/Z$/)
               end
             end
 
@@ -204,8 +203,8 @@ module Upset
         context 'when nesting schemas' do
           let :validator do
             schema do
-              optional_property 'alpha' do
-                required_property 'beta'
+              optional 'alpha' do
+                required 'beta'
               end
             end
           end
@@ -216,24 +215,12 @@ module Upset
           end
         end
 
-        context 'when nesting schemas and defining constraints' do
-          let :validator do
-            schema do
-              optional_property('alpha', is_a(String)) {}
-            end
-          end
-
-          it 'raises SchemaError' do
-            expect { validator }.to raise_error(described_class::SchemaError)
-          end
-        end
-
         context 'when called multiple times' do
           let :validator do
             Class.new.class_exec(described_class) do |dsl_module|
               include dsl_module
-              schema { required_property 'alpha' }
-              schema { required_property 'beta' }
+              schema { required 'alpha' }
+              schema { required 'beta' }
             end.new
           end
 
@@ -248,10 +235,10 @@ module Upset
           let :validator_class do
             superclass = Class.new.class_exec(described_class) do |dsl_module|
               include dsl_module
-              schema { required_property 'alpha' }
+              schema { required 'alpha' }
             end
             Class.new(superclass).class_exec do
-              schema { required_property 'beta' }
+              schema { required 'beta' }
             end
           end
 

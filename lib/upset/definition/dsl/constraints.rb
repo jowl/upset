@@ -4,36 +4,36 @@ module Upset
   module Definition
     module Dsl
       module Constraints
-        def is_a(kind)
+        def a(kind)
           KindConstraint.new(kind)
         end
-        alias :is_an :is_a
+        alias :an :a
 
-        def matches(pattern)
+        def matching(pattern)
           RegexpConstraint.new(pattern)
         end
 
-        def is_a_file
+        def a_file
           FileConstraint.new
         end
 
-        def is_between(lower, upper)
+        def between(lower, upper)
           RangeConstraint.new(lower, upper)
         end
 
-        def is_above(lower)
-          is_between(lower, nil)
+        def above(lower)
+          between(lower, nil)
         end
 
-        def is_below(upper)
-          is_between(nil, upper)
+        def below(upper)
+          between(nil, upper)
         end
 
-        def is_a_positive_integer
-          both(is_an(Integer), is_above(1))
+        def a_positive_integer
+          both an(Integer), above(1)
         end
 
-        def each_member(constraint)
+        def all(constraint)
           MemberConstraint.new(constraint)
         end
 
