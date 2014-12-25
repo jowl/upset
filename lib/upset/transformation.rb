@@ -39,3 +39,4 @@ module Upset
 end
 
 require 'upset/transformation/deep_freezer'
+require 'upset/transformation/parsers'
