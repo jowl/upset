@@ -33,3 +33,4 @@ module Upset
 end
 
 require 'upset/provision/yaml_provider'
+require 'upset/provision/dsl'
