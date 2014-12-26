@@ -6,17 +6,17 @@ require 'tempfile'
 module Upset
   module Definition
     describe Dsl do
-      def schema(&block)
+      def definition(&block)
         Class.new.class_exec(described_class) do |dsl_module|
           include dsl_module
-          schema(&block)
+          definition(&block)
         end.new
       end
 
-      describe '#schema' do
+      describe '#definition' do
         describe '#required_property' do
           let :validator do
-            schema do
+            definition do
               required 'alpha'
             end
           end
@@ -29,7 +29,7 @@ module Upset
 
         describe '#optional' do
           let :validator do
-            schema do
+            definition do
               optional 'alpha'
             end
           end
@@ -42,7 +42,7 @@ module Upset
 
         describe '#residual' do
           let :validator do
-            schema do
+            definition do
               residual.is a(String)
             end
           end
@@ -57,7 +57,7 @@ module Upset
         context 'with constraints' do
           describe '#a' do
             let :validator do
-              schema do
+              definition do
                 required('alpha').is a(String)
               end
             end
@@ -70,7 +70,7 @@ module Upset
 
           describe '#matching' do
             let :validator do
-              schema do
+              definition do
                 required('alpha').is matching(/[A-Z]+/)
               end
             end
@@ -83,7 +83,7 @@ module Upset
 
           describe '#a_file' do
             let :validator do
-              schema do
+              definition do
                 required('alpha').is a_file
               end
             end
@@ -105,7 +105,7 @@ module Upset
 
           describe '#between' do
             let :validator do
-              schema do
+              definition do
                 required('alpha').is between 1, 3
               end
             end
@@ -119,7 +119,7 @@ module Upset
 
           describe '#above' do
             let :validator do
-              schema do
+              definition do
                 required('alpha').is above 1
               end
             end
@@ -132,7 +132,7 @@ module Upset
 
           describe '#below' do
             let :validator do
-              schema do
+              definition do
                 required('alpha').is below 3
               end
             end
@@ -145,7 +145,7 @@ module Upset
 
           describe '#a_positive_integer' do
             let :validator do
-              schema do
+              definition do
                 required('alpha').is a_positive_integer
               end
             end
@@ -160,7 +160,7 @@ module Upset
 
           describe '#all' do
             let :validator do
-              schema do
+              definition do
                 required('alpha').are all an(Integer)
               end
             end
@@ -173,7 +173,7 @@ module Upset
 
           describe '#either' do
             let :validator do
-              schema do
+              definition do
                 required('alpha').is either a(String), a(NilClass)
               end
             end
@@ -187,7 +187,7 @@ module Upset
 
           describe '#both' do
             let :validator do
-              schema do
+              definition do
                 required('alpha').is both matching(/^A/), matching(/Z$/)
               end
             end
@@ -200,9 +200,9 @@ module Upset
           end
         end
 
-        context 'when nesting schemas' do
+        context 'when nesting definitions' do
           let :validator do
-            schema do
+            definition do
               optional 'alpha' do
                 required 'beta'
               end
@@ -219,8 +219,8 @@ module Upset
           let :validator do
             Class.new.class_exec(described_class) do |dsl_module|
               include dsl_module
-              schema { required 'alpha' }
-              schema { required 'beta' }
+              definition { required 'alpha' }
+              definition { required 'beta' }
             end.new
           end
 
@@ -235,10 +235,10 @@ module Upset
           let :validator_class do
             superclass = Class.new.class_exec(described_class) do |dsl_module|
               include dsl_module
-              schema { required 'alpha' }
+              definition { required 'alpha' }
             end
             Class.new(superclass).class_exec do
-              schema { required 'beta' }
+              definition { required 'beta' }
             end
           end
 
@@ -249,7 +249,7 @@ module Upset
             expect(validator.validate('alpha' => nil, 'beta' => nil)).to be_valid
           end
 
-          it "doesn't change the superclass' schema" do
+          it "doesn't change the superclass' definition" do
             validator = validator_class.superclass.new
             expect(validator.validate('alpha' => nil)).to be_valid
             expect(validator.validate('beta' => nil)).not_to be_valid

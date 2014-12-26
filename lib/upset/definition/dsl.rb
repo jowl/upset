@@ -6,16 +6,19 @@ module Upset
   module Definition
     module Dsl
       def self.included(mod)
-        mod.extend(SchemaDsl)
+        mod.extend(ClassMethods)
       end
 
       def validate(configuration=self)
         self.class.schema.validate(configuration)
       end
 
-      module SchemaDsl
-        def schema(&block)
-          return schema_context.build unless block_given?
+      module ClassMethods
+        def schema
+          schema_context.build
+        end
+
+        def definition(&block)
           schema_context.instance_exec(&block)
           self
         end
