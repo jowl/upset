@@ -1,29 +1,23 @@
 # encoding: utf-8
 
+require 'upset/provision'
+
 module Upset
   module Transformation
-    class Transformer
+    class Transformer < Provision::Provider
       def initialize(provider, transformations)
-        @provider = provider
+        self.properties = provider
         @transformations = transformations
       end
 
       def [](key)
-        if (property = @provider[key])
+        if (property = get(key))
           if (transformation = @transformations[key])
             TransformedProperty.new(property, transformation)
           else
             property
           end
         end
-      end
-
-      def keys
-        @provider.keys
-      end
-
-      def has_key?(key)
-        @provider.has_key?(key)
       end
     end
   end
