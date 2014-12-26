@@ -12,6 +12,21 @@ module Upset
       Configuration.new(default_provider)
     end
 
+    describe Transformation do
+      let :transformer do
+        Transformation::Transformer.new(Provision::Provider.new('beta' => 'psi'), 'beta' => Transformation::DeepFreezer.new)
+      end
+
+      before do
+        configuration.providers << transformer
+      end
+
+      it 'returns transformed properties' do
+        expect(configuration['alpha']).not_to be_frozen
+        expect(configuration['beta']).to be_frozen
+      end
+    end
+
     describe Configuration do
       before do
         configuration.providers << Provision::Provider.new('beta' => 43)
