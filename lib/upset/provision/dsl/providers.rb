@@ -8,6 +8,10 @@ module Upset
           add_provider(Provider.new(properties), &block)
         end
 
+        def json(path, &block)
+          add_provider(JsonProvider.new(path).setup, &block)
+        end
+
         def yaml(path, &block)
           add_provider(YamlProvider.new(path).setup, &block)
         end

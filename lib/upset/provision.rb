@@ -35,4 +35,5 @@ module Upset
 end
 
 require 'upset/provision/dsl'
+require 'upset/provision/providers/json_provider'
 require 'upset/provision/providers/yaml_provider'

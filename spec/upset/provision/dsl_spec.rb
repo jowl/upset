@@ -37,6 +37,32 @@ module Upset
             end
           end
 
+          describe '#json' do
+            let :file do
+              Tempfile.new('file.json')
+            end
+
+            before do
+              file.puts('{"alpha":"A"}')
+              file.flush
+            end
+
+            after do
+              file.close
+              file.unlink
+            end
+
+            let :configuration do
+              provision(file) do |file|
+                json file.path
+              end
+            end
+
+            it 'creates a JsonProvider' do
+              expect(configuration['alpha']).to eq('A')
+            end
+          end
+
           describe '#yaml' do
             let :file do
               Tempfile.new('file.yaml')
