@@ -14,14 +14,14 @@ module Upset
       end
 
       describe '#provision' do
-        it 'prioritizes the providers descendingly' do
+        it 'prioritizes the providers ascendingly' do
           configuration = provision do
             properties 'alpha' => 1
             properties 'alpha' => 2, 'beta' => 2
             properties 'beta' => 3
           end
-          expect(configuration['alpha']).to eq(1)
-          expect(configuration['beta']).to eq(2)
+          expect(configuration['alpha']).to eq(2)
+          expect(configuration['beta']).to eq(3)
         end
 
         context 'with providers' do
