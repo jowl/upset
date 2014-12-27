@@ -8,25 +8,21 @@ module Upset
       Provision::Provider.new(properties)
     end
 
-    let :default_provider do
-      provide('alpha' => [], 'beta' => false, 'gamma' => {})
+    let :providers do
+      [provide('alpha' => [], 'beta' => false, 'gamma' => {})]
     end
 
     let :configuration do
-      described_class.new(default_provider)
+      described_class.new(providers)
     end
 
     describe '#[]' do
-      let :default_provider do
-        provide('alpha' => :a1, 'beta' => :a2, 'gamma' => :a3)
-      end
-
       let :providers do
-        [provide('alpha' => :b1, 'beta' => :b2), provide('alpha' => :c1)]
-      end
-
-      before do
-        configuration.providers = providers
+        [
+          provide('alpha' => :c1),
+          provide('alpha' => :b1, 'beta' => :b2),
+          provide('alpha' => :a1, 'beta' => :a2, 'gamma' => :a3),
+        ]
       end
 
       it 'returns the first found property value from the providers' do

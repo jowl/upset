@@ -22,9 +22,9 @@ module Upset
         def add_provider(provider, &block)
           if block_given?
             transformer = TransformerContext.new(provider, &block).build
-            @providers << transformer
+            @providers.unshift(transformer)
           else
-            @providers << provider
+            @providers.unshift(provider)
           end
         end
 

@@ -3,9 +3,8 @@
 module Upset
   class Configuration
     attr_accessor :providers
-    def initialize(default_provider)
-      @default_provider = default_provider
-      @providers = []
+    def initialize(providers=nil)
+      @providers = Array(providers)
     end
 
     def [](key)
@@ -25,23 +24,20 @@ module Upset
     end
 
     def property(key)
-      first_provider { |provider| provider[key] }
+      @providers.reduce(nil) do |property, provider|
+        break property if property
+        provider[key]
+      end
     end
 
     def has_property?(key)
-      first_provider { |provider| provider.has_key?(key) }
+      @providers.any? { |provider| provider.has_key?(key) }
     end
     alias :has_key? :has_property?
 
     def properties
-      @providers.reduce(@default_provider.keys) { |properties, provider| properties | provider.keys }
+      @providers.reduce([]) { |properties, provider| properties | provider.keys }
     end
     alias :keys :properties
-
-    private
-
-    def first_provider(&block)
-      block.call(@providers.reverse_each.find(&block) || @default_provider)
-    end
   end
 end

@@ -11,10 +11,7 @@ module Upset
 
       module ClassMethods
         def create
-          providers = provision_context.build
-          new(providers.shift).tap do |configuration|
-            configuration.providers = providers
-          end
+          new(provision_context.build)
         end
 
         def provision(*args, &block)

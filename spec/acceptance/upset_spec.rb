@@ -4,12 +4,12 @@ require 'spec_helper'
 
 module Upset
   describe self do
-    let :default_provider do
+    let :provider do
       Provision::Provider.new('alpha' => 'omega', 'beta' => 42)
     end
 
     let :configuration do
-      Configuration.new(default_provider)
+      Configuration.new(provider)
     end
 
     describe Transformation do
@@ -29,14 +29,14 @@ module Upset
 
     describe Configuration do
       before do
-        configuration.providers << Provision::Provider.new('beta' => 43)
+        configuration.providers.unshift(Provision::Provider.new('beta' => 43))
       end
 
-      it 'prefers the latest added Provider' do
+      it 'prefers the first Provider' do
         expect(configuration['beta']).to eq(43)
       end
 
-      it 'falls back on the default Provider' do
+      it 'falls back on the next Provider' do
         expect(configuration['alpha']).to eq('omega')
       end
     end
