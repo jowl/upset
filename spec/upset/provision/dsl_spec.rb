@@ -8,7 +8,7 @@ module Upset
     describe Dsl do
       def provision(*args, &block)
         Class.new(Configuration).class_exec(described_class, *args) do |dsl_module, *args|
-          extend dsl_module
+          include dsl_module
           provision(*args, &block)
         end.create
       end
