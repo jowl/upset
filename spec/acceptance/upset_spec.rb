@@ -18,7 +18,7 @@ module Upset
       end
 
       before do
-        configuration.providers << transformer
+        configuration.providers.unshift(transformer)
       end
 
       it 'returns transformed properties' do
