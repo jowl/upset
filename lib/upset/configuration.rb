@@ -12,7 +12,9 @@ module Upset
     end
 
     def fetch(key, *default, &block)
-      if has_property?(key)
+      if (argument_count = 1 + default.size) > 2
+        raise ArgumentError, 'wrong number of arguments (%d for 1..2)' % argument_count
+      elsif has_property?(key)
         self[key]
       elsif block_given?
         block.call

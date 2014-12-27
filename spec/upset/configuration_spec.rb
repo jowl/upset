@@ -45,6 +45,10 @@ module Upset
         expect(configuration.fetch('beta', 1)).to eq(false)
       end
 
+      it 'raises ArgumentError when too many arguments' do
+        expect { configuration.fetch('beta', 1, 2) }.to raise_error(ArgumentError)
+      end
+
       context 'when the property is unknown' do
         it 'raises KeyError without default and block' do
           expect { configuration.fetch('delta') }.to raise_error(KeyError)
@@ -56,6 +60,10 @@ module Upset
 
         it 'returns the default value' do
           expect(configuration.fetch('delta', 1)).to eq(1)
+        end
+
+        it 'returns the default value, even if nil' do
+          expect(configuration.fetch('delta', nil)).to be_nil
         end
 
         it 'choses the block over the default value' do
