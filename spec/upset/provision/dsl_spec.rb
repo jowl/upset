@@ -63,6 +63,45 @@ module Upset
             end
           end
         end
+
+        context 'when called multiple times' do
+          let :configuration do
+            Class.new(Configuration).class_exec(described_class) do |dsl_module|
+              include dsl_module
+              provision { properties 'alpha' => 1 }
+              provision { properties 'beta' => 2 }
+            end.create
+          end
+
+          it 'concatinates the providers' do
+            expect(configuration['alpha']).to eq(1)
+            expect(configuration['beta']).to eq(2)
+          end
+        end
+
+        context 'when subclassing' do
+          let :configuration_class do
+            superclass = Class.new(Configuration).class_exec(described_class) do |dsl_module|
+              include dsl_module
+              provision { properties 'alpha' => 1 }
+            end
+            Class.new(superclass).class_exec do
+              provision { properties 'beta' => 2 }
+            end
+          end
+
+          it 'inherits the providers' do
+            configuration = configuration_class.create
+            expect(configuration['alpha']).to eq(1)
+            expect(configuration['beta']).to eq(2)
+          end
+
+          it "doesn't change the superclass' providers" do
+            configuration = configuration_class.superclass.create
+            expect(configuration['alpha']).to eq(1)
+            expect(configuration['beta']).to be_nil
+          end
+        end
       end
     end
   end

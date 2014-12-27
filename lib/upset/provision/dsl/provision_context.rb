@@ -8,12 +8,13 @@ module Upset
       class ProvisionContext
         include Providers
 
-        attr_reader :providers
         def initialize
           @providers = []
         end
 
-        alias :build :providers
+        def build
+          @providers.dup
+        end
 
         private
 
@@ -23,7 +24,7 @@ module Upset
 
         def initialize_dup(other)
           super
-          @providers.concat(other.providers)
+          @providers = other.build
         end
       end
     end
