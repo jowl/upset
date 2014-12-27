@@ -11,7 +11,7 @@ module Upset
         attr_reader :property_contexts
         def initialize(&schema_definition)
           @property_contexts = {}
-          instance_exec(&schema_definition) if schema_definition
+          instance_exec(&schema_definition) if block_given?
         end
 
         def required(key, &block)
