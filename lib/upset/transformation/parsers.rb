@@ -17,8 +17,8 @@ module Upset
     class BooleanParser
       def call(value)
         case value
-        when TRUE_LOWER, TRUE_UPPER then true
-        when FALSE_LOWER, FALSE_UPPER then false
+        when true, TRUE_LOWER, TRUE_UPPER then true
+        when false, FALSE_LOWER, FALSE_UPPER then false
         else
           raise ArgumentError, 'not able to parse %s as a boolean' % value
         end

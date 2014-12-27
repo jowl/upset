@@ -10,8 +10,10 @@ module Upset
       BooleanParser => {
         'true' => true,
         'TRUE' => true,
+        true => true,
         'false' => false,
-        'FALSE' => false
+        'FALSE' => false,
+        false => false,
       },
     }.each do |parser_cls, expectations|
       describe parser_cls do
