@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require 'upset/property'
+
 module Upset
   module Provision
     class Provider
@@ -32,5 +34,5 @@ module Upset
   end
 end
 
-require 'upset/provision/yaml_provider'
 require 'upset/provision/dsl'
+require 'upset/provision/providers/yaml_provider'
