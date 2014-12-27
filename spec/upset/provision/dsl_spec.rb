@@ -14,17 +14,17 @@ module Upset
       end
 
       describe '#provision' do
-        context 'with providers' do
-          it 'prioritizes them descendingly' do
-            configuration = provision do
-              properties 'alpha' => 1
-              properties 'alpha' => 2, 'beta' => 2
-              properties 'beta' => 3
-            end
-            expect(configuration['alpha']).to eq(1)
-            expect(configuration['beta']).to eq(2)
+        it 'prioritizes the providers descendingly' do
+          configuration = provision do
+            properties 'alpha' => 1
+            properties 'alpha' => 2, 'beta' => 2
+            properties 'beta' => 3
           end
+          expect(configuration['alpha']).to eq(1)
+          expect(configuration['beta']).to eq(2)
+        end
 
+        context 'with providers' do
           describe '#properties' do
             let :configuration do
               provision do
@@ -60,6 +60,114 @@ module Upset
 
             it 'creates a YamlProvider' do
               expect(configuration['alpha']).to eq('A')
+            end
+          end
+        end
+
+        context 'with transformers' do
+          context 'and key constraints' do
+            describe '#all' do
+              let :configuration do
+                provision do
+                  properties 'alpha' => '1', 'beta' => '2' do
+                    parse_integer all
+                  end
+                end
+              end
+
+              it 'applies transformation to all properties' do
+                expect(configuration['alpha']).to eq(1)
+                expect(configuration['beta']).to eq(2)
+              end
+            end
+
+            context 'with specific keys' do
+              let :configuration do
+                provision do
+                  properties 'alpha' => '1', 'beta' => '2', 'gamma' => '3' do
+                    parse_integer 'alpha', 'gamma'
+                  end
+                end
+              end
+
+              it 'only applies transformation the specified properties' do
+                expect(configuration['alpha']).to eq(1)
+                expect(configuration['beta']).to eq('2')
+                expect(configuration['gamma']).to eq(3)
+              end
+            end
+          end
+
+          describe '#deep_freeze' do
+            let :configuration do
+              provision do
+                properties 'alpha' => ['A'] do
+                  deep_freeze all
+                end
+              end
+            end
+
+            it 'creates a DeepFreezer' do
+              expect(configuration['alpha']).to be_frozen
+              expect(configuration['alpha']).to all be_frozen
+            end
+          end
+
+          describe '#parse_integer' do
+            let :configuration do
+              provision do
+                properties 'alpha' => '1' do
+                  parse_integer all
+                end
+              end
+            end
+
+            it 'creates an IntegerParser' do
+              expect(configuration['alpha']).to eq(1)
+            end
+          end
+
+          describe '#parse_float' do
+            let :configuration do
+              provision do
+                properties 'alpha' => '1.5' do
+                  parse_float all
+                end
+              end
+            end
+
+            it 'creates a FloatParser' do
+              expect(configuration['alpha']).to eq(1.5)
+            end
+          end
+
+          describe '#parse_boolean' do
+            let :configuration do
+              provision do
+                properties('alpha' => 'true') do
+                  parse_boolean all
+                end
+              end
+            end
+
+            it 'creates a BooleanParser' do
+              expect(configuration['alpha']).to eq(true)
+            end
+          end
+
+          describe '#transform' do
+            let :configuration do
+              provision do
+                properties 'alpha' => 1 do
+                  transform all do |value|
+                    value * 2
+                  end
+                end
+              end
+            end
+
+            it 'creates a custom transformation' do
+              expect(configuration['alpha']).to eq(2)
             end
           end
         end
