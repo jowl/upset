@@ -13,6 +13,13 @@ module Upset
         self.class.schema.validate(configuration)
       end
 
+      def validate!(configuration=self)
+        unless (validation_result = validate(configuration)).valid?
+          raise ValidationError
+        end
+        true
+      end
+
       module ClassMethods
         def schema
           schema_context.build
@@ -34,5 +41,7 @@ module Upset
         end
       end
     end
+
+    ValidationError = Class.new(UpsetError)
   end
 end

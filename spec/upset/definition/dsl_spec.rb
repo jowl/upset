@@ -13,8 +13,34 @@ module Upset
         end.new
       end
 
-      describe '#definition' do
-        describe '#required_property' do
+      let :validator do
+        definition do
+          required 'alpha'
+        end
+      end
+
+      describe '#validate' do
+        it 'returns a valid ValidationResult if the configuratin is valid' do
+          expect(validator.validate('alpha' => nil)).to be_valid
+        end
+
+        it 'returns an ivalid ValidationResult if the configuratin is valid' do
+          expect(validator.validate({})).not_to be_valid
+        end
+      end
+
+      describe '#validate!' do
+        it 'returns true if the configuration is valid' do
+          expect(validator.validate!('alpha' => nil)).to eq(true)
+        end
+
+        it 'raises ValidationError true if the configuration is invalid' do
+          expect { validator.validate!({}) }.to raise_error(ValidationError)
+        end
+      end
+
+      describe '.definition' do
+        describe '#required' do
           let :validator do
             definition do
               required 'alpha'
