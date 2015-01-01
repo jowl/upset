@@ -10,32 +10,37 @@ module Upset
       protected
 
       def valid
-        ValidationResult.new(nil)
+        ValidationResult.new(nil, [])
       end
 
-      def invalid(reason)
-        ValidationResult.new(reason)
+      def invalid(message, *causes)
+        ValidationResult.new(message, causes)
       end
     end
 
     class ValidationResult
-      attr_reader :reason
-      def initialize(reason)
-        @reason = Array(reason)
+      attr_reader :message, :causes
+      def initialize(message, causes=[])
+        @message = message
+        @causes = causes
       end
 
       def valid?
-        @reason.empty?
+        @message.nil?
       end
 
-      def self.join(results)
-        invalid_results = results.reject(&:valid?)
-        if invalid_results.empty?
-          new(nil)
-        else
-          new(invalid_results.map(&:reason))
+      def trace(indent=0)
+        @causes.flat_map do |validation_result|
+          [
+            TWO_SPACES * indent + validation_result.message,
+            *validation_result.trace(indent + 1)
+          ]
         end
       end
+
+      private
+
+      TWO_SPACES = '  '.freeze
     end
   end
 end

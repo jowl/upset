@@ -8,13 +8,24 @@ module Upset
       end
 
       def validate(configuration)
-        validation_results = (@property_definitions.keys | configuration.keys).map do |property|
+        invalid_results = validate_properties(configuration).reject(&:valid?)
+        if invalid_results.empty?
+          valid
+        else
+          invalid('Invalid configuration', *invalid_results)
+        end
+      end
+
+      private
+
+      def validate_properties(configuration)
+        (@property_definitions.keys | configuration.keys).map do |property|
           if configuration.has_key?(property)
             if (definition = @property_definitions[property])
               if (validation_result = definition.validate(configuration[property])).valid?
                 valid
               else
-                invalid_property(property, validation_result)
+                invalid("Invalid property #{property.inspect}", validation_result)
               end
             else
               invalid("Undefined property #{property.inspect}")
@@ -25,13 +36,6 @@ module Upset
             invalid("Missing #{property.inspect}")
           end
         end
-        ValidationResult.join(validation_results)
-      end
-
-      private
-
-      def invalid_property(property, validation_result)
-        invalid(["Invalid property #{property.inspect}", validation_result.reason])
       end
     end
   end
