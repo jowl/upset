@@ -9,7 +9,11 @@ module Upset
       end
 
       def validate(configuration)
-        @schema.validate(configuration)
+        if configuration.is_a?(Configuration) || configuration.is_a?(Hash)
+          @schema.validate(configuration)
+        else
+          invalid 'Expected Configuration or Hash, got %s' % configuration.class
+        end
       end
     end
   end
