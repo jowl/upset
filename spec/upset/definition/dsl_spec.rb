@@ -20,7 +20,7 @@ module Upset
       end
 
       describe '#validate' do
-        it 'returns a valid ValidationResult if the configuratin is valid' do
+        it 'returns a valid ValidationResult if the configuration is valid' do
           expect(validator.validate('alpha' => nil)).to be_valid
         end
 
@@ -34,8 +34,29 @@ module Upset
           expect(validator.validate!('alpha' => nil)).to eq(true)
         end
 
-        it 'raises ValidationError true if the configuration is invalid' do
-          expect { validator.validate!({}) }.to raise_error(ValidationError)
+        context 'when the configuration is invalid' do
+          let :validator do
+            definition do
+              required 'alpha' do
+                required 'beta'
+              end
+            end
+          end
+
+          it 'raises a ValidationError' do
+            expect { validator.validate!({}) }.to raise_error(ValidationError)
+          end
+
+          it 'raises an error with a proper validation trace' do
+            expect { validator.validate!('alpha' => {}) }.to raise_error do |err|
+              expected_trace = [
+                'Invalid property "alpha"',
+                '  Invalid configuration',
+                '    Missing "beta"'
+              ]
+              expect(err.validation_trace).to eq(expected_trace)
+            end
+          end
         end
       end
 

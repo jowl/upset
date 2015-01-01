@@ -15,10 +15,12 @@ module Upset
 
       def validate!(configuration=self)
         unless (validation_result = validate(configuration)).valid?
-          raise ValidationError
+          raise ValidationError, validation_result
         end
         true
       end
+
+      private
 
       module ClassMethods
         def schema
@@ -42,6 +44,12 @@ module Upset
       end
     end
 
-    ValidationError = Class.new(UpsetError)
+    class ValidationError < UpsetError
+      attr_reader :validation_trace
+      def initialize(validation_result, *args)
+        super(validation_result.message, *args)
+        @validation_trace = validation_result.trace
+      end
+    end
   end
 end
